@@ -26,6 +26,11 @@ export default {
         white: {
           DEFAULT: "#F2F2F2",
         },
+        red: {
+          DEFAULT: "#dc2626",
+          light: "#f87171",
+          darker: "#b91c1c",
+        },
       },
       fontFamily: {
         mono: ["Alexandria", "monospace"],

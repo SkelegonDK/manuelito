@@ -1,0 +1,11 @@
+# Project Intelligence
+
+- **Critical Implementation Paths:** The `src/pages/index.astro` file is the main entry point for the website. The `src/components` directory contains reusable components.
+- **User Preferences and Workflow:** The user seems to prefer using Astro for static site generation and Tailwind CSS for styling.
+- **Project-Specific Patterns:** The project uses a consistent design language with specific colors (pblack, pgreen, pblue, ppink, pyellow) defined in the Tailwind configuration.
+- **Known Challenges:** None apparent at this time.
+- **Evolution of Project Decisions:** The project started with a basic Astro template and is being expanded with custom components and content.
+- **Tool Usage Patterns:** The user is using VS Code as the IDE and `bun` as the package manager.
+- **Memory Bank Initialization:** The memory bank has been initialized with the following core files: `projectbrief.md`, `productContext.md`, `activeContext.md`, `systemPatterns.md`, `techContext.md`, `progress.md`, and `.clinerules`.
+- **Dark Mode Implementation:** Implemented a dark mode/light mode toggle using an inline script in `BaseHead.astro`, a `ThemeToggle.astro` component, and updated styles in `global.css`.
+- **Button Component Implementation:** Created a reusable Button component at `src/components/Button.astro` and integrated it into the Hero component. Added custom red color definitions to tailwind.config.mjs for styling the button.
