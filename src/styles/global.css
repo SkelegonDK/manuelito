@@ -147,3 +147,44 @@ h1, h2, h3, h4, h5, h6 {
  .blur-and-scale {
   filter: url(#blur-and-scale);
  }
+
+/* SVG Filter Classes */
+.filter-neon-glow {
+  filter: url(#neon-glow);
+}
+
+.filter-turbulent-distortion {
+  filter: url(#turbulent-distortion);
+}
+
+.filter-duotone {
+  filter: url(#duotone);
+}
+
+.filter-glitch-effect {
+  filter: url(#glitch-effect);
+}
+
+.filter-shattered-glass {
+  filter: url(#shattered-glass);
+}
+
+.filter-retro-vhs {
+  filter: url(#retro-vhs);
+}
+
+.filter-sketched-outline {
+  filter: url(#sketched-outline);
+}
+
+.filter-smoky-dispersion {
+  filter: url(#smoky-dispersion);
+}
+
+.filter-paper-cutout {
+  filter: url(#paper-cutout);
+}
+
+.filter-holographic {
+  filter: url(#holographic);
+}
