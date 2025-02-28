@@ -82,6 +82,16 @@
     font-weight: normal;
     font-style: normal;
 }
+
+@font-face {
+  font-family: "Frick";
+  font-style: display;
+  font-display: swap;
+  src: url("/fonts/Frick0.3-Regular.woff2") format("truetype");
+  font-weight: normal;
+    font-style: normal;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -120,8 +130,20 @@
   transition: all 0.05s;
 }
 
+.frick {
+  font-family: 'Frick', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Frick', sans-serif;
+}
 .button:active {
   transform: translateY(4px);
   border-bottom-width: 4px;
   outline: none;
 }
+ .blur-and-scale {
+  filter: url(#blur-and-scale);
+ }

@@ -5,6 +5,7 @@ import Footer from "@/components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
 import { getCollection } from "astro:content";
 import WhatIDo from "@/components/WhatIDo.astro";
+import VideoBackground from "@/components/VideoBackground.astro";
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
@@ -16,6 +17,7 @@ const posts = (await getCollection("blog")).sort(
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
   <body>
+    <VideoBackground />
     <Header />
     <main class="container mx-auto md:px-10 py-20">
       <WhatIDo />
