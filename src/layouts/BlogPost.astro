@@ -6,6 +6,7 @@ import Footer from "@/components/Footer.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import { Icon } from "astro-icon/components";
 import VideoBackground from "@/components/VideoBackground.astro";
+import SVGFilters from "@/components/SVGFilters.astro";
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -45,6 +46,7 @@ const getRandomClass = () => {
   </head>
   <body>
     <VideoBackground />
+    <SVGFilters />
     <Header />
     <main class="container mx-auto md:px-10 text-white">
       <article >
@@ -143,10 +145,3 @@ const getRandomClass = () => {
     <Footer />
   </body>
 </html>
-<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0">
-  <filter id="blur-and-scale" y="-50%" x="-50%" width="200%" height="200%">
-    <feGaussianBlur in="SourceGraphic" stdDeviation="50" result="blurred" />
-    <feColorMatrix in="blurred" type="saturate" values="5" />
-    <feComposite in="SourceGraphic" operator="over" />
-  </filter>
-</svg>
