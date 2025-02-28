@@ -1,0 +1,170 @@
+---
+// SVGFilters.astro - A component that contains all SVG filter definitions
+---
+
+<svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position: absolute; z-index: -1;">
+  <!-- Original blur-and-scale filter -->
+  <filter id="blur-and-scale" y="-50%" x="-50%" width="200%" height="200%">
+    <feGaussianBlur in="SourceGraphic" stdDeviation="50" result="blurred" />
+    <feColorMatrix in="blurred" type="saturate" values="5" />
+    <feComposite in="SourceGraphic" operator="over" />
+  </filter>
+
+  <!-- 1. Neon Glow -->
+    <filter id="neon-glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="8" result="blur" />
+      <feFlood flood-color="#ff00ff" flood-opacity="1" result="color" />
+      <feComposite in="color" in2="blur" operator="in" result="glow" />
+      <feFlood flood-color="#00ffff" flood-opacity="1" result="color2" />
+      <feComposite in="color2" in2="blur" operator="in" result="glow2" />
+      <feOffset in="glow2" dx="3" dy="3" result="offsetGlow" />
+      <feMerge>
+        <feMergeNode in="offsetGlow" />
+        <feMergeNode in="glow" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+
+  <!-- 2. Turbulent Distortion -->
+  <filter id="turbulent-distortion" x="-50%" y="-50%" width="200%" height="200%">
+    <feTurbulence type="turbulence" baseFrequency="0.02 0.08" numOctaves="3" seed="5" result="turbulence">
+      <animate attributeName="baseFrequency" dur="20s" values="0.02 0.08;0.05 0.15;0.02 0.08" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="50" xChannelSelector="R" yChannelSelector="G" />
+  </filter>
+
+  <!-- 3. Duotone -->
+  <filter id="duotone" x="0%" y="0%" width="100%" height="100%">
+    <feColorMatrix type="matrix" values="0.3 0.3 0.3 0 0 0.3 0.3 0.3 0 0 0.3 0.3 0.3 0 0 0 0 0 1 0" result="grayscale" />
+    <feComponentTransfer color-interpolation-filters="sRGB" result="duotone">
+      <feFuncR type="table" tableValues="0.0 1.0" />
+      <feFuncG type="table" tableValues="0.0 0.2" />
+      <feFuncB type="table" tableValues="0.4 0.0" />
+      <feFuncA type="table" tableValues="0 1" />
+    </feComponentTransfer>
+  </filter>
+
+  <!-- 4. Glitch Effect -->
+  <filter id="glitch-effect" x="-30%" y="-30%" width="160%" height="160%">
+    <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="red-channel" />
+    <feOffset in="red-channel" dx="8" dy="-5" result="red-offset" />
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0" result="green-channel" />
+    <feOffset in="green-channel" dx="-8" dy="0" result="green-offset" />
+    <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="blue-channel" />
+    <feOffset in="blue-channel" dx="0" dy="5" result="blue-offset" />
+    <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="1" result="noise" />
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G" result="noisy" />
+    <feMerge>
+      <feMergeNode in="red-offset" />
+      <feMergeNode in="green-offset" />
+      <feMergeNode in="blue-offset" />
+      <feMergeNode in="noisy" />
+    </feMerge>
+  </filter>
+
+  <!-- 5. Shattered Glass -->
+  <filter id="shattered-glass" x="-50%" y="-50%" width="200%" height="200%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.1" numOctaves="4" seed="1" result="noise" />
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="25" xChannelSelector="R" yChannelSelector="G" result="displacement" />
+    <feComposite in="displacement" in2="SourceAlpha" operator="in" result="composite" />
+    <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur" />
+    <feSpecularLighting in="blur" surfaceScale="5" specularConstant="1" specularExponent="20" lightingColor="white" result="specular">
+      <fePointLight x="-5000" y="-10000" z="20000" />
+    </feSpecularLighting>
+    <feComposite in="specular" in2="composite" operator="in" result="specular-composite" />
+    <feMerge>
+      <feMergeNode in="composite" />
+      <feMergeNode in="specular-composite" />
+    </feMerge>
+  </filter>
+
+  <!-- 6. Retro VHS -->
+  <filter id="retro-vhs" x="-10%" y="-10%" width="120%" height="120%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="2" result="noise" />
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G" result="displacement" />
+    <feColorMatrix in="displacement" type="matrix" values="1.3 0 0 0 0 0 0.7 0 0 0 0 0 0.5 0 0 0 0 0 1 0" result="color-shift" />
+    <feMorphology operator="dilate" radius="1.5" in="color-shift" result="dilated" />
+    <feGaussianBlur stdDeviation="1" in="dilated" result="blurred" />
+    <feTurbulence type="turbulence" baseFrequency="0 0.15" numOctaves="3" seed="1" result="scan-lines" />
+    <feDisplacementMap in="blurred" in2="scan-lines" scale="8" xChannelSelector="R" yChannelSelector="G" result="final-displacement" />
+    <feFlood flood-color="#000000" flood-opacity="0.2" result="black-overlay" />
+    <feComposite in="black-overlay" in2="final-displacement" operator="in" result="scan-overlay" />
+    <feMerge>
+      <feMergeNode in="final-displacement" />
+      <feMergeNode in="scan-overlay" />
+    </feMerge>
+  </filter>
+
+  <!-- 7. Sketched Outline -->
+  <filter id="sketched-outline" x="-20%" y="-20%" width="140%" height="140%">
+    <feMorphology operator="dilate" radius="2" in="SourceAlpha" result="thicken" />
+    <feGaussianBlur in="thicken" stdDeviation="2.5" result="blurred" />
+    <feFlood flood-color="#000000" result="black" />
+    <feComposite in="black" in2="blurred" operator="in" result="outline" />
+    <feTurbulence type="turbulence" baseFrequency="0.1" numOctaves="3" result="noise" />
+    <feDisplacementMap in="outline" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" result="sketch-outline" />
+    <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" result="slightly-blurred" />
+    <feComponentTransfer in="slightly-blurred" result="high-contrast">
+      <feFuncR type="gamma" amplitude="1.5" exponent="1.2" />
+      <feFuncG type="gamma" amplitude="1.5" exponent="1.2" />
+      <feFuncB type="gamma" amplitude="1.5" exponent="1.2" />
+    </feComponentTransfer>
+    <feComposite in="high-contrast" in2="sketch-outline" operator="over" result="final" />
+    <feColorMatrix in="final" type="matrix" values="0.1 0.1 0.1 0 0 0.1 0.1 0.1 0 0 0.1 0.1 0.1 0 0 0 0 0 1 0" />
+  </filter>
+
+  <!-- 8. Smoky Dispersion -->
+  <filter id="smoky-dispersion" x="-100%" y="-100%" width="300%" height="300%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="5" seed="10" result="noise" />
+    <feDisplacementMap in="SourceGraphic" in2="noise" scale="70" xChannelSelector="R" yChannelSelector="G" result="displacement" />
+    <feGaussianBlur in="displacement" stdDeviation="6" result="blur" />
+    <feComponentTransfer in="blur" result="opacity">
+      <feFuncA type="linear" slope="0.7" intercept="0" />
+    </feComponentTransfer>
+    <feMorphology operator="erode" radius="1" in="opacity" result="eroded" />
+    <feBlend in="eroded" in2="SourceGraphic" mode="multiply" />
+  </filter>
+
+  <!-- 9. Paper Cut-Out -->
+  <filter id="paper-cutout" x="-30%" y="-30%" width="160%" height="160%">
+    <feTurbulence type="fractalNoise" baseFrequency="0.2" numOctaves="2" seed="5" result="noise" />
+    <feComponentTransfer in="noise" result="adjusted-noise">
+      <feFuncA type="table" tableValues="0 0.4 0.4 0.4" />
+    </feComponentTransfer>
+    <feFlood flood-color="#000000" flood-opacity="0.6" result="shadow-color" />
+    <feOffset in="SourceAlpha" dx="8" dy="8" result="offset" />
+    <feComposite in="shadow-color" in2="offset" operator="in" result="shadow" />
+    <feGaussianBlur in="shadow" stdDeviation="4" result="blur" />
+    <feComponentTransfer in="SourceGraphic" result="high-contrast">
+      <feFuncR type="gamma" amplitude="1.3" exponent="1.0" />
+      <feFuncG type="gamma" amplitude="1.3" exponent="1.0" />
+      <feFuncB type="gamma" amplitude="1.3" exponent="1.0" />
+    </feComponentTransfer>
+    <feComposite in="adjusted-noise" in2="high-contrast" operator="in" result="texture" />
+    <feMerge>
+      <feMergeNode in="blur" />
+      <feMergeNode in="texture" />
+      <feMergeNode in="high-contrast" />
+    </feMerge>
+  </filter>
+
+  <!-- 10. Holographic -->
+  <filter id="holographic" x="-30%" y="-30%" width="160%" height="160%">
+    <feTurbulence type="turbulence" baseFrequency="0.02 0.08" numOctaves="2" seed="0" result="turbulence">
+      <animate attributeName="baseFrequency" dur="10s" values="0.02 0.08;0.05 0.12;0.02 0.08" repeatCount="indefinite" />
+    </feTurbulence>
+    <feDisplacementMap in="SourceGraphic" in2="turbulence" scale="15" xChannelSelector="R" yChannelSelector="G" result="displacement" />
+    <feComponentTransfer in="displacement" result="shifted">
+      <feFuncR type="table" tableValues="1.5 0 0 1.5 1.5" />
+      <feFuncG type="table" tableValues="0 0 1.5 1.5 0" />
+      <feFuncB type="table" tableValues="1.5 1.5 0 0 1.5" />
+    </feComponentTransfer>
+    <feConvolveMatrix order="3" kernelMatrix="1 0 0 0 0 0 0 0 -1" in="shifted" result="emboss" />
+    <feColorMatrix in="emboss" type="luminanceToAlpha" result="alpha" />
+    <feComponentTransfer in="alpha">
+      <feFuncA type="table" tableValues="0 0.4 0.7 0.9 1" />
+    </feComponentTransfer>
+    <feComposite in2="shifted" operator="in" result="colorized" />
+    <feBlend in="colorized" in2="SourceGraphic" mode="screen" />
+  </filter>
+</svg>
