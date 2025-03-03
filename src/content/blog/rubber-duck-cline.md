@@ -1,7 +1,7 @@
 ---
 title: 'The 10x Rubber Duck Expanded'
 description: 'How to get the most out of the Cline extension'
-icon: "2"
+icon: "🤖"
 pubDate: '2024-11-22'
 heroImage: "/src/assets/rubberduck.png"
 tags: ['Coding Assistants', 'Agentic AI', 'LLMs', 'Claude']

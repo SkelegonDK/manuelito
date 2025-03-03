@@ -1,10 +1,10 @@
 ---
 title: 'The 10x Rubber Duck'
-description: 'A Journey into AI-Assisted Development'
-icon: "3"
-pubDate: '2024-11-14'
+description: 'AI assisted development'
+icon: "🐤"
+pubDate: '2023-02-25'
 heroImage: "/src/assets/rubberduck.png"
-tags: ['Coding Assistants', 'Agentic AI', 'LLMs', 'Claude']
+tags: ['Coding Assistants', 'Agentic AI', 'LLMs', 'Claude', 'Cline', 'MCP']
 ---
 
 # The 10x Rubber Duck: 

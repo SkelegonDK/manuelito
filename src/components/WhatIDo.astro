@@ -4,7 +4,6 @@ const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 import FormattedDate from "@/components/FormattedDate.astro";
-import { Icon } from "astro-icon/components";
 
 const bgClasses = [
   "bg-pgreen rounded-full",
@@ -26,15 +25,15 @@ const getRandomClass = () => {
       posts.map((post) => {
         const randomClass = getRandomClass();
         return (
-          <li class="w-72 text-left rounded-3xl border-1 border-black shadow-card backdrop-blur-sm bg-slate-200 bg-opacity-45 group hover:shadow-hover transition  px-4 py-6 flex flex-col gap-6">
+          <li class="w-72 text-left rounded-3xl border-1 border-black shadow-card backdrop-blur-md bg-white/30 group hover:shadow-hover transition px-4 py-6 flex flex-col gap-6">
             <a href={`/blog/${post.id}/`} class="flex flex-col gap-4">
               <div
                 class={`bg-pgblack text-4xl p-2 self-start border-1 border-black shadow-card1 group-hover:shadow-card transition`}
               >
-                <Icon name={post.data.icon} />
+                {post.data.icon}
               </div>
               <h4 class="text-xl font-semibold">{post.data.title}</h4>
-              <p class="date -mt-4 text-sm font-light">
+              <p class="date -mt-4 text-sm font-light text-white">
                 <FormattedDate date={post.data.pubDate} />
               </p>
             </a>

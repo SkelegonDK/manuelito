@@ -1,7 +1,7 @@
 ---
 title: 'The 100x Rubber Duck'
 description: 'Next level AI assisted development'
-icon: "1"
+icon: "🦆"
 pubDate: '2025-02-25'
 heroImage: "/src/assets/100x.png"
 tags: ['Coding Assistants', 'Agentic AI', 'LLMs', 'Claude', 'Cline', 'MCP']

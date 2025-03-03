@@ -10,7 +10,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 
 <VideoBackground />
 
-<section class="hero-section py-20 px-4 md:px-0 relative">
+<section class="hero-section pt-16 pb-20 px-4 md:px-0 relative">
   <!-- Content container with higher z-index -->
   <div class="container mx-auto relative z-10 flex md:flex-row flex-col gap-10 md:gap-0">
     <!-- Hero text section -->
@@ -18,39 +18,41 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
       <h3 class="text-pwhite hero-text">Hi, my name is Manuel Thomsen</h3>
       <h1 class="frick text-6xl font-bold hero-title">Creative Technologist</h1>
       <p class="text-pwhite hero-text">Synthetic voice-over specialist for the advertisement industry.</p>
+      
+      <!-- Social Icons -->
+      <div class="flex items-center gap-4 text-2xl mt-2">
+        <a
+          href="https://jramma.com"
+          target="_blank"
+          class="py-1 pl-3 rounded-md border-1 border-black bg-ppink shadow-card hover:shadow-hover transition"
+        >
+          <Icon name="web" />
+        </a>
+        <a
+          href="https://github.com/jramma"
+          target="_blank"
+          class="border-1 p-1 border-black rounded-full bg-pblue shadow-card hover:shadow-hover transition"
+        >
+          <Icon name="github" />
+        </a>
+        <a
+          href="https://www.linkedin.com/in/jramma/"
+          target="_blank"
+          class="border-1 p-1 border-black rounded-full bg-pgreen shadow-card hover:shadow-hover transition"
+        >
+          <Icon name="linkedin" />
+        </a>
+      </div>
     </div>
     
-    <div
-      class="md:w-1/2 object-contain flex items-center justify-center p-10 group animate-fade-in-delayed"
-    >
-      <a
-        rel="noopener noreferrer"
-        href="https://es.wikipedia.org/wiki/Joaqu%C3%ADn_Sorolla"
-        target="_blank"
-        class="photo-link"
-      >
-        <div
-          class="photo-card bg-white dark:bg-gray-800 border-black rounded-2xl h-52 w-60 shadow-card group-hover:shadow-hover flex transition relative"
-        >
-          <div class="image-container">
-            <Image
-              class="profile-image group-hover:scale-105 transition"
-              src={images["/src/assets/manuel.png"]()}
-              alt="Manuel Thomsen, photo wiki"
-              width={320}
-              height={400}
-            />
-          </div>
-        </div>
-      </a>
-    </div>
+    
   </div>
 </section>
 
 <style>
   /* Hero section */
   .hero-section {
-    min-height: 80vh;
+    min-height: 85vh;
     display: flex;
     align-items: center;
     position: relative;

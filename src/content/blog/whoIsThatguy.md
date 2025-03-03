@@ -1,11 +1,10 @@
 ---
-title: "Who is that guy"
-description:
-  'Foto de <a class="underline" href="https://unsplash.com/es/@adrigeo_?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Adrianna Geo</a> en <a class="underline" href="https://unsplash.com/es/fotos/una-pintura-en-el-techo-de-un-edificio-1rBg5YSi00c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-  '
-icon: "3"
-pubDate: "Jun 19 2024"
-heroImage: "/src/assets/adriana.jpg"
+title: 'Who is that guy?'
+description: 'Foto de <a class="underline" href="https://unsplash.com/es/@adrigeo_?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Adrianna Geo</a> en <a href="https://unsplash.com/es/fotos/una-pintura-en-el-techo-de-un-edificio-1rBg5YSi00c?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash" class="underline">Unsplash</a>'
+pubDate: 'Jul 15 2022'
+updatedDate: 'Jul 22 2022'
+icon: "❓"
+heroImage: "/src/assets/fran.jpg"
 ---
 
 # Title 1

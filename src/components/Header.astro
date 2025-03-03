@@ -4,17 +4,16 @@ import "../styles/hamburgers.css";
 import ThemeToggle from "./ThemeToggle.astro";
 ---
 
-<header class="pb-40 rounded-lg">
+<header class="pb-20">
   <nav
-    class="z-50 flex fixed top-0 left-0 right-0 backdrop-blur-md bg-white/20 container mx-auto md:p-10 px-4 py-6 items-center border-b border-black/20 justify-between"
+    class="z-50 flex fixed top-0 left-0 right-0 backdrop-blur-md bg-white/20 w-full px-4 py-3 items-center border-b border-black/20 justify-between"
   >
     <a class="flex items-center gap-2" href="/">
-      
-      <p class="pt-2 md:text-lg font-semibold flex">
+      <p class="pt-1 md:text-lg font-semibold flex">
         <span class="hidden md:block">manuelito</span>.tech
       </p>
     </a>
-    <ul class="items-center md:gap-8 text-nowrap hidden md:flex">
+    <ul class="items-center md:gap-6 text-nowrap hidden md:flex">
       <li><Link href="/" text="Home" style="primary" /></li>
       <li><Link href="/about" text="What I do" style="secondary" /></li>
       <li><Link href="/blog" text="Blog" style="tertiary" /></li>

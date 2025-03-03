@@ -167,4 +167,43 @@
     <feComposite in2="shifted" operator="in" result="colorized" />
     <feBlend in="colorized" in2="SourceGraphic" mode="screen" />
   </filter>
+
+  <!-- 11. Frosted Glass -->
+  
+    <filter id="frostedGlass" x="-50%" y="-50%" width="200%" height="200%">
+      <!-- Base blur for frosted effect -->
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="blur" />
+      
+      <!-- Noise texture for frost -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.01" numOctaves="1" result="noise" />
+      <feDisplacementMap in="blur" in2="noise" scale="10" xChannelSelector="R" yChannelSelector="G" result="frosted" />
+      
+      <!-- Drop shadow -->
+      <feOffset in="SourceAlpha" dx="2" dy="2" result="offsetblur" />
+      <feGaussianBlur in="offsetblur" stdDeviation="2" result="shadow" />
+      <feColorMatrix in="shadow" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0" result="shadowMatrix" />
+      
+      <!-- 3D stroke highlight -->
+      <feSpecularLighting in="frosted" specularExponent="20" lightingColor="#ffffff" 
+                         surfaceScale="2" result="highlight">
+        <fePointLight x="-5000" y="-10000" z="20000" />
+      </feSpecularLighting>
+      <feComposite in="highlight" in2="frosted" operator="in" result="highlight2" />
+      
+      <!-- Stroke effect -->
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1" result="stroke" />
+      <feComposite in="stroke" in2="highlight2" operator="out" result="stroke-highlight" />
+      
+      <!-- Combine all effects -->
+      <feComposite in="shadowMatrix" in2="SourceGraphic" operator="over" result="withShadow" />
+      <feComposite in="frosted" in2="withShadow" operator="over" result="withShadowAndFrost" />
+      <feComposite in="stroke-highlight" in2="withShadowAndFrost" operator="over" result="final" />
+      
+      <!-- Adjust contrast and brightness -->
+      <feComponentTransfer in="final" result="finalAdjusted">
+        <feFuncR type="linear" slope="1.1" intercept="0.05" />
+        <feFuncG type="linear" slope="1.1" intercept="0.05" />
+        <feFuncB type="linear" slope="1.1" intercept="0.05" />
+      </feComponentTransfer>
+    </filter>
 </svg>

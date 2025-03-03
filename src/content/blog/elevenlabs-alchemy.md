@@ -1,10 +1,10 @@
 ---
-title: 'Elevenlabs'' Alchemy'
-description: 'Industry defining Voice Generation'
-icon: "5"
-pubDate: '2024-05-10'
-heroImage: "/src/assets/Eleven.png"
-tags: ['Localisation', 'Voice Generation', 'Custom Voice models']
+title: 'Elevenlabs Alchemy'
+description: 'Synthetic voice-over for the advertisement industry'
+icon: "🎙️"
+pubDate: '2023-02-25'
+heroImage: "/src/assets/elevenlabs.png"
+tags: ['Synthetic Voice', 'Elevenlabs', 'Voice-over', 'Advertisement']
 ---
 
 # Elevenlabs' Alchemy
