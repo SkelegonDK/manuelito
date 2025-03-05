@@ -1,0 +1,26 @@
+---
+// OptimizedImage.astro - A wrapper around Astro's Image component with sensible defaults
+import { Image } from 'astro:assets';
+
+const { 
+  src, 
+  alt, 
+  class: className = '',
+  width,
+  height,
+  loading = 'lazy',
+  format = 'webp',
+  quality = 80
+} = Astro.props;
+---
+
+<Image 
+  src={src} 
+  alt={alt}
+  width={width}
+  height={height}
+  loading={loading}
+  format={format}
+  quality={quality}
+  class={className}
+/> 

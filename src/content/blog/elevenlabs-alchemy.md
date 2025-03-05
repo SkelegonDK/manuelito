@@ -3,7 +3,7 @@ title: 'Elevenlabs Alchemy'
 description: 'Synthetic voice-over for the advertisement industry'
 icon: "🎙️"
 pubDate: '2023-02-25'
-heroImage: "/src/assets/elevenlabs.png"
+heroImage: "/src/assets/Eleven.png"
 tags: ['Synthetic Voice', 'Elevenlabs', 'Voice-over', 'Advertisement']
 ---
 
@@ -38,4 +38,4 @@ If you do this, you'll be surprised how quickly you can create something that fe
 
 ## Conclusion
 
-Elevenlabs leads the way in voice generation, but at the end of the day, it's still just a tool. The real magic comes from how you use it. Treat it like alchemy—a mix of technology and human touch. With practice, you'll find that's where true transformation happens. 
+Elevenlabs leads the way in voice generation, but at the end of the day, it's still just a tool. The real magic comes from how you use it. Treat it like alchemy—a mix of technology and human touch. With practice, you'll find that's where true transformation happens.

@@ -1,9 +1,53 @@
 ---
-import { getCollection } from "astro:content";
-const posts = (await getCollection("blog")).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
-);
-import FormattedDate from "@/components/FormattedDate.astro";
+// Import Font Awesome 6 icons from react-icons
+import { FaLaptopCode } from "react-icons/fa6";
+import { FaPaintbrush } from "react-icons/fa6";
+import { FaMobileScreen } from "react-icons/fa6";
+import { FaPeopleGroup } from "react-icons/fa6";
+import { FaToolbox } from "react-icons/fa6";
+
+// Define your professional skills and experience here
+const skills = [
+  {
+    title: "Web Development",
+    icon: FaLaptopCode,
+    description: "Building responsive, accessible, and performant web applications using modern frameworks and technologies."
+  },
+  {
+    title: "UI/UX Design",
+    icon: FaPaintbrush,
+    description: "Creating intuitive and beautiful user interfaces with a focus on user experience and accessibility."
+  },
+  {
+    title: "Mobile Development",
+    icon: FaMobileScreen,
+    description: "Developing cross-platform mobile applications that provide native-like experiences."
+  },
+  {
+    title: "Technical Leadership",
+    icon: FaPeopleGroup,
+    description: "Leading technical teams, mentoring developers, and ensuring project success through effective communication and planning."
+  }
+];
+
+// Define your professional projects
+const projects = [
+  {
+    title: "E-commerce Platform",
+    description: "Developed a full-featured e-commerce platform with integrated payment processing and inventory management.",
+    technologies: ["React", "Node.js", "MongoDB", "Stripe"]
+  },
+  {
+    title: "Healthcare Application",
+    description: "Built a HIPAA-compliant healthcare application for patient management and appointment scheduling.",
+    technologies: ["Vue.js", "Express", "PostgreSQL", "Docker"]
+  },
+  {
+    title: "Educational Platform",
+    description: "Created an interactive learning platform with real-time collaboration features for students and educators.",
+    technologies: ["Next.js", "Firebase", "WebRTC", "TailwindCSS"]
+  }
+];
 
 const bgClasses = [
   "bg-pgreen rounded-full",
@@ -17,30 +61,64 @@ const getRandomClass = () => {
 };
 ---
 
-<section class="flex flex-col text-center gap-4 " >
-  <p class="text-pwhite">Thoughts on design, code, and everything in between.</p>
-  <h2 class="text-4xl font-bold">Blog</h2>
-  <ul class="flex flex-wrap justify-center md:justify-start gap-8 py-20">
-    {
-      posts.map((post) => {
-        const randomClass = getRandomClass();
-        return (
-          <li class="w-72 text-left rounded-3xl border-1 border-white backdrop-blur-md bg-white/30 group hover:shadow-hover transition px-4 py-6 flex flex-col gap-6">
-            <a href={`/blog/${post.id}/`} class="flex flex-col gap-4">
-              <div
-                class={`bg-pgblack text-4xl p-2 self-start transition`}
-              >
-                {post.data.icon}
-              </div>
-              <h4 class="text-xl font-semibold">{post.data.title}</h4>
-              <p class="date -mt-4 text-sm font-light text-white">
-                <FormattedDate date={post.data.pubDate} />
-              </p>
-            </a>
-            <div set:html={post.data.description} />
+<section class="flex flex-col text-center gap-8">
+  
+  <!-- Skills Section -->
+  <div class="py-8">
+    <h3 class="text-2xl font-semibold mb-8">Skills & Expertise</h3>
+    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        skills.map((skill) => (
+          <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-lg p-6 text-left flex flex-col gap-3 transition">
+            <div class="text-4xl text-pgreen">
+              <skill.icon size={40} />
+            </div>
+            <h4 class="text-xl font-medium dark:text-white">{skill.title}</h4>
+            <p class="dark:text-gray-200">{skill.description}</p>
           </li>
-        );
-      })
-    }
-  </ul>
+        ))
+      }
+    </ul>
+  </div>
+  
+  <!-- Projects Section -->
+  <div class="py-8">
+    <h3 class="text-2xl font-semibold mb-8">Featured Projects</h3>
+    <ul class="flex flex-col gap-8">
+      {
+        projects.map((project) => {
+          const randomClass = getRandomClass();
+          return (
+            <li class="bg-white/30 dark:bg-black/30 backdrop-blur-md rounded-lg p-6 text-left transition">
+              <h4 class="text-xl font-medium mb-3 dark:text-white">{project.title}</h4>
+              <p class="mb-4 dark:text-gray-200">{project.description}</p>
+              <div class="flex flex-wrap gap-2">
+                {project.technologies.map((tech) => (
+                  <span class={`px-3 py-1 text-sm ${randomClass}`}>{tech}</span>
+                ))}
+              </div>
+            </li>
+          )
+        })
+      }
+    </ul>
+  </div>
+  
+  <!-- Call to Action -->
+  <div class="py-8">
+    <p class="mb-4 dark:text-gray-200">Interested in working together? Let's discuss your project!</p>
+    <a href="/contact" class="inline-block bg-pgreen text-white font-medium py-2 px-6 rounded-full transition">Get in Touch</a>
+  </div>
 </section>
+
+<style>
+  /* Ensure text is readable in both light and dark modes */
+  :global(.dark) h3 {
+    color: white;
+  }
+  
+  /* Add subtle transition for color changes */
+  li {
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+</style>

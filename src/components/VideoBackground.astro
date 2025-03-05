@@ -3,13 +3,16 @@
   <div class="video-overlay"></div>
   <div class="white-overlay dark:invert"></div>
   <video
-    class="video-bg dark:invert filter-turbulent-distortion"
+    class="video-bg dark:invert"
     playsinline
     autoplay
     muted
     loop
+    preload="metadata"
     id="bgvid"
+    poster="/video-poster.jpg"
   >
+    <source src="/sky.webm" type="video/webm" />
     <source src="/sky.mp4" type="video/mp4" />
   </video>
 </div>
@@ -76,11 +79,25 @@
   :global(.dark) .video-bg {
     filter: invert(1) hue-rotate(180deg);
   }
+  
+  /* Filter classes kept for reference but not applied to video */
+  .filter-turbulent-distortion {
+    /* Class kept for reference but not applied to reduce GPU load */
+  }
 </style>
 
 <script>
   // Add class to body when page loads
   document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('has-video-bg');
+    
+    // Lazy load the video for better performance
+    const video = document.getElementById('bgvid') as HTMLVideoElement;
+    if (video) {
+      // Only start loading the video after the page has loaded
+      setTimeout(() => {
+        video.load();
+      }, 100);
+    }
   });
 </script> 

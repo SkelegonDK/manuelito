@@ -1,12 +1,12 @@
 ---
 import Layout from '@/layouts/BlogPost.astro';
 import VideoBackground from '@/components/VideoBackground.astro';
-import AboutComponent from '@/components/About.astro';
+import WhatIDoComponent from '@/components/WhatIDo.astro';
 
-const tags = ['personal', 'bio', 'interests', 'background'];
+const tags = ['work', 'skills', 'projects', 'professional'];
 const description = `
   <p class="text-left">
-    Learn more about me, my background, interests, and what drives me beyond my professional work.
+    Explore my professional work, skills, and personal projects.
   </p>
 `;
 ---
@@ -15,11 +15,11 @@ const description = `
 
 <Layout
 	tags={tags}
-	icon="👋"
-	title="About Me"
+	icon="💼"
+	title="What I Do"
 	description={description}
 	pubDate={new Date()}
 	heroImage="/src/assets/manuel.png"
 >
-	<AboutComponent />
-</Layout>
+	<WhatIDoComponent />
+</Layout> 

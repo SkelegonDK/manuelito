@@ -25,16 +25,16 @@ const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 const bgClasses = [
-  "hover:shadow-ppinkHover",
-  "hover:shadow-pgreenHover",
-  "hover:shadow-pblueHover",
-  "hover:shadow-pyellow",
-
+  "bg-ppink",
+  "bg-pgreen",
+  "bg-pblue",
+  "bg-pyellow",
 ];
+
 import type { ImageMetadata } from 'astro';
 import { Image } from 'astro:assets';
 const images = import.meta.glob<{ default: ImageMetadata }>('/src/assets/*.{jpeg,jpg,png,gif}')
-if (!images[heroImage]) throw new Error(`"${heroImage}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`);
+if (heroImage.startsWith("/src/assets/") && !images[heroImage]) throw new Error(`"${heroImage}" does not exist in glob: "src/assets/*.{jpeg,jpg,png,gif}"`);
 
 const getRandomClass = () => {
   return bgClasses[Math.floor(Math.random() * bgClasses.length)];
@@ -49,23 +49,22 @@ const getRandomClass = () => {
     <VideoBackground />
     <SVGFilters />
     <Header />
-    <main class="container mx-auto md:px-10 text-white pt-16">
-      <article >
-        <div class="relative mb-20" transition:animate="fade">
-          <span class="bg-black bg-opacity-25 w-full h-full absolute"></span>
-          <div class="absolute bottom-10 md:left-20 left-6">
-            <h1 class="text-4xl md:text-9xl font-semibold text-shadow">
-              
+    <main class="container mx-auto md:px-10 pt-16">
+      <article>
+        <div class="relative mb-20 backdrop-blur-md" transition:animate="fade">
+          <!-- Simple black/white hero section instead of image -->
+          <div class=" dark:bg-black/30 bg-white/30 h-96 w-full flex items-center justify-center">
+            <div class="text-center px-6">
+              <h1 class="text-4xl md:text-9xl font-semibold text-white dark:text-black mb-4">
                 {title}
-              
-            </h1>
-            <p  set:html={description} />
+              </h1>
+              <p class="text-white dark:text-black text-xl md:text-2xl" set:html={description} />
+            </div>
           </div>
-          <Image src={images[heroImage]()}  alt={title} class="h-96 w-full object-cover blur-and-scale"/>
         </div>
-        <div class="text-black px-6 md:px-0">
+        <div class="px-6 md:px-0">
           <div class="">
-            <div class="text-sm text-white flex items-center justify-between">
+            <div class="text-sm flex items-center justify-between">
               <FormattedDate date={pubDate} />
               {
                 updatedDate && (
@@ -82,7 +81,7 @@ const getRandomClass = () => {
             <hr />
           </div>
           <div class="flex justify-between py-10 md:flex-row flex-col">
-            <div class="prose md:w-1/2 flex flex-col gap-6">
+            <div class="prose md:w-1/2 flex flex-col gap-6 dark:prose-invert">
               <slot />
             </div>
             <div class="flex flex-col gap-6" transition:animate="slide">
@@ -90,56 +89,19 @@ const getRandomClass = () => {
                 <p class="md:hidden font-semibold">Related:</p>
                 {
                   posts.map((post) => {
+                    const randomClass = getRandomClass();
                     return (
-                      <li class=`text-left rounded-lg border-1 border-black shadow-card backdrop-blur-md bg-white/30 group hover:shadow-hover transition px-2 py-2 ${getRandomClass()}` >
+                      <li class={`text-left rounded-lg border-1 border-black backdrop-blur-md bg-white/30 dark:bg-black/30 group transition px-2 py-2 ${randomClass}`}>
                         <a
                           href={`/blog/${post.id}/`}
                         >
-                          <h4>{post.data.title}</h4>
+                          <h4 class="dark:text-white">{post.data.title}</h4>
                         </a>
                       </li>
                     );
                   })
                 }
               </ul>
-              <hr />
-              <p>Written by</p>
-              <div class="flex -mt-4 gap-2">
-                  <div class="bg-pgreen rounded-full w-12 h-12 aspect-square object-contain overflow-hidden ">
-                    <Image src={images["/src/assets/hero.png"]()} alt="Fran" />
-                  </div>
-                  <div>
-                  <h3>Manuel Thomsen</h3>
-                  <p class="text-pblack">Creative Technologist based<br>in Copenhagen</p>
-                </div>
-              </div>
-              <hr/>
-              <div>
-                <p>Contributors:</p>
-                <div class="flex items-center gap-6 text-xl">
-                  <a
-                    href="https://jramma.com"
-                    target="_blank"
-                    class="py-1 pl-3 rounded-md border-1 border-black bg-ppink shadow-card hover:shadow-hover transition"
-                  >
-                    <Icon name="web" />
-                  </a>
-                  <a
-                    href="https://github.com/jramma"
-                    target="_blank"
-                    class="border-1 p-1 border-black rounded-full bg-pblue shadow-card hover:shadow-hover transition"
-                  >
-                    <Icon name="github" />
-                  </a>
-                  <a
-                    href="https://www.linkedin.com/in/jramma/"
-                    target="_blank"
-                    class="border-1 p-1 border-black rounded-full bg-pgreen shadow-card hover:shadow-hover transition"
-                  >
-                    <Icon name="linkedin" />
-                  </a>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -149,3 +111,18 @@ const getRandomClass = () => {
     
   </body>
 </html>
+
+<style>
+  /* Add styles for better dark mode text contrast */
+  :global(.dark) .prose {
+    color: #f2f2f2;
+  }
+  
+  :global(.dark) h1, :global(.dark) h2, :global(.dark) h3, :global(.dark) h4 {
+    color: #ffffff;
+  }
+  
+  :global(.dark) p {
+    color: #e0e0e0;
+  }
+</style>

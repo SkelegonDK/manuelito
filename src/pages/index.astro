@@ -4,9 +4,9 @@ import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import Hero from "@/components/Hero.astro";
+import Picture from "@/components/Picture.astro";
 
 import SVGFilters from "@/components/SVGFilters.astro";
-import { Image } from "astro:assets";
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/*.{jpeg,jpg,png,gif}",
 );
@@ -28,10 +28,13 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
       class="md:w-1/2 sm:w-1/5 object-contain flex items-center justify-center p-10 group animate-fade-in"
     >
       <div class="image-container fixed bottom-0 sm:right-40 md:right-0">
-        <Image
-          class="profile-image group-hover:scale-105 transition"
-          src={images["/src/assets/manuel.png"]()}
+        <Picture
+          src="/src/assets/manuel.png"
           alt="Manuel Thomsen, photo wiki"
+          class="profile-image group-hover:scale-105 transition"
+          sizes="(max-width: 640px) 100vw, 320px"
+          widths={[320, 640]}
+          loading="lazy"
         />
       </div>
     </div>
