@@ -6,7 +6,7 @@ const blog = defineCollection({
     loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
     // Type-check frontmatter using a schema
     schema: z.object({
-        icon: z.string().describe('Emoji to use as the post icon'),
+        icon: z.string().describe('Icon to use as the post icon (can be an emoji or a React component reference)'),
         title: z.string(),
         description: z.string(),
         // Transform string to Date object

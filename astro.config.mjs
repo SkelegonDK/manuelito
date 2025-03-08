@@ -9,6 +9,6 @@ import icon from "astro-icon";
 // https://astro.build/config
 export default defineConfig({
   site: 'https://manuelito.tech',
-  output:'static',
+  output: 'static',
   integrations: [mdx(), sitemap(), tailwind(), icon(), react()]
 });

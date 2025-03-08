@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/BlogPost.astro';
-import VideoBackground from '@/components/VideoBackground.astro';
 import WhatIDoComponent from '@/components/WhatIDo.astro';
+import { FaBriefcase } from "react-icons/fa6";
 
 const tags = ['work', 'skills', 'projects', 'professional'];
 const description = `
@@ -11,15 +11,12 @@ const description = `
 `;
 ---
 
-<VideoBackground />
-
 <Layout
 	tags={tags}
-	icon="💼"
 	title="What I Do"
 	description={description}
 	pubDate={new Date()}
 	heroImage="/src/assets/manuel.png"
 >
 	<WhatIDoComponent />
-</Layout> 
+</Layout>

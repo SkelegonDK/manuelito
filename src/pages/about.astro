@@ -1,7 +1,7 @@
 ---
 import Layout from '@/layouts/BlogPost.astro';
-import VideoBackground from '@/components/VideoBackground.astro';
 import AboutComponent from '@/components/About.astro';
+import { FaUser } from "react-icons/fa6";
 
 const tags = ['personal', 'bio', 'interests', 'background'];
 const description = `
@@ -11,11 +11,8 @@ const description = `
 `;
 ---
 
-<VideoBackground />
-
 <Layout
 	tags={tags}
-	icon="👋"
 	title="About Me"
 	description={description}
 	pubDate={new Date()}

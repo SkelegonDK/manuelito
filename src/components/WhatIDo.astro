@@ -50,10 +50,10 @@ const projects = [
 ];
 
 const bgClasses = [
-  "bg-pgreen rounded-full",
-  "bg-pblue rounded-2xl",
-  "bg-ppink ",
-  "bg-pyellow rounded-md",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
 ];
 
 const getRandomClass = () => {
@@ -65,16 +65,16 @@ const getRandomClass = () => {
   
   <!-- Skills Section -->
   <div class="py-8">
-    <h3 class="text-2xl font-semibold mb-8">Skills & Expertise</h3>
-    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <h3 class="text-2xl font-semibold mb-8 text-black dark:text-white">Skills & Expertise</h3>
+    <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 list-none">
       {
         skills.map((skill) => (
-          <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-lg p-6 text-left flex flex-col gap-3 transition">
-            <div class="text-4xl text-pgreen">
+          <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 text-left flex flex-col gap-3 transition">
+            <div class="text-4xl text-black dark:text-white">
               <skill.icon size={40} />
             </div>
-            <h4 class="text-xl font-medium dark:text-white">{skill.title}</h4>
-            <p class="dark:text-gray-200">{skill.description}</p>
+            <h4 class="text-xl font-medium text-black dark:text-white">{skill.title}</h4>
+            <p class="text-black dark:text-gray-200">{skill.description}</p>
           </li>
         ))
       }
@@ -83,18 +83,18 @@ const getRandomClass = () => {
   
   <!-- Projects Section -->
   <div class="py-8">
-    <h3 class="text-2xl font-semibold mb-8">Featured Projects</h3>
-    <ul class="flex flex-col gap-8">
+    <h3 class="text-2xl font-semibold mb-8 text-black dark:text-white">Featured Projects</h3>
+    <ul class="flex flex-col gap-8 list-none">
       {
         projects.map((project) => {
           const randomClass = getRandomClass();
           return (
-            <li class="bg-white/30 dark:bg-black/30 backdrop-blur-md rounded-lg p-6 text-left transition">
-              <h4 class="text-xl font-medium mb-3 dark:text-white">{project.title}</h4>
-              <p class="mb-4 dark:text-gray-200">{project.description}</p>
+            <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 text-left transition">
+              <h4 class="text-xl font-medium mb-3 text-black dark:text-white">{project.title}</h4>
+              <p class="mb-4 text-black dark:text-gray-200">{project.description}</p>
               <div class="flex flex-wrap gap-2">
                 {project.technologies.map((tech) => (
-                  <span class={`px-3 py-1 text-sm ${randomClass}`}>{tech}</span>
+                  <span class={`px-3 py-1 text-sm rounded-lg text-black dark:text-white ${randomClass}`}>{tech}</span>
                 ))}
               </div>
             </li>
@@ -106,8 +106,8 @@ const getRandomClass = () => {
   
   <!-- Call to Action -->
   <div class="py-8">
-    <p class="mb-4 dark:text-gray-200">Interested in working together? Let's discuss your project!</p>
-    <a href="/contact" class="inline-block bg-pgreen text-white font-medium py-2 px-6 rounded-full transition">Get in Touch</a>
+    <p class="mb-4 text-black dark:text-gray-200">Interested in working together? Let's discuss your project!</p>
+    <a href="/contact" class="inline-block bg-white/10 dark:bg-black/10 text-black dark:text-white font-medium py-2 px-6 rounded-xl transition border border-black dark:border-white">Get in Touch</a>
   </div>
 </section>
 

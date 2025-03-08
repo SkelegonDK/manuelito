@@ -1,15 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import BaseHead from "@/components/BaseHead.astro";
-import Header from "@/components/Header.astro";
-import Footer from "@/components/Footer.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import { Icon } from "astro-icon/components";
-import VideoBackground from "@/components/VideoBackground.astro";
-import SVGFilters from "@/components/SVGFilters.astro";
 
-
-type Props = CollectionEntry<"blog">["data"];
+type Props = Omit<CollectionEntry<"blog">["data"], "icon">;
 
 const {
   title = "",
@@ -17,18 +12,24 @@ const {
   pubDate,
   updatedDate,
   heroImage = "/fran.jpg",
-  icon,
   tags,
-} = Astro.props;
+} = Astro.props as {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  heroImage?: string;
+  tags?: string[];
+};
 import { getCollection } from "astro:content";
 const posts = (await getCollection("blog")).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
 const bgClasses = [
-  "bg-ppink",
-  "bg-pgreen",
-  "bg-pblue",
-  "bg-pyellow",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
+  "bg-white/10 dark:bg-black/10 rounded-xl",
 ];
 
 import type { ImageMetadata } from 'astro';
@@ -41,76 +42,61 @@ const getRandomClass = () => {
 };
 ---
 
-<html lang="en">
-  <head>
-    <BaseHead title={title} description={description} />
-  </head>
-  <body>
-    <VideoBackground />
-    <SVGFilters />
-    <Header />
-    <main class="container mx-auto md:px-10 pt-16">
-      <article>
-        <div class="relative mb-20 backdrop-blur-md" transition:animate="fade">
-          <!-- Simple black/white hero section instead of image -->
-          <div class=" dark:bg-black/30 bg-white/30 h-96 w-full flex items-center justify-center">
-            <div class="text-center px-6">
-              <h1 class="text-4xl md:text-9xl font-semibold text-white dark:text-black mb-4">
-                {title}
-              </h1>
-              <p class="text-white dark:text-black text-xl md:text-2xl" set:html={description} />
-            </div>
-          </div>
+<BaseLayout title={title} description={description}>
+  <article>
+    <div class="relative mb-20 backdrop-blur-md " transition:animate="fade">
+      <!-- Simple black/white hero section instead of image -->
+      <div class=" dark:bg-black/30 bg-white/30 h-96 w-full flex items-center justify-center rounded-xl">
+        <div class="text-center px-6">
+          <h1 class="text-4xl md:text-9xl font-semibold dark:text-white text-black mb-4">
+            {title}
+          </h1>
+          <p class="text-white dark:text-black text-xl md:text-2xl" set:html={description} />
         </div>
-        <div class="px-6 md:px-0">
-          <div class="">
-            <div class="text-sm flex items-center justify-between">
-              <FormattedDate date={pubDate} />
-              {
-                updatedDate && (
-                  <div class="last-updated-on">
-                    Last updated on <FormattedDate date={updatedDate} />
-                  </div>
-                )
-              }
-              <span class="text-5xl" transition:animate="fade">
-                {icon}
-              </span>
-            </div>
+      </div>
+    </div>
+    <div class="px-6 md:px-0">
+      <div class="">
+        <div class="text-sm flex items-center justify-between">
+          <FormattedDate date={pubDate} />
+          {
+            updatedDate && (
+              <div class="last-updated-on">
+                Last updated on <FormattedDate date={updatedDate} />
+              </div>
+            )
+          }
+        </div>
 
-            <hr />
-          </div>
-          <div class="flex justify-between py-10 md:flex-row flex-col">
-            <div class="prose md:w-1/2 flex flex-col gap-6 dark:prose-invert">
-              <slot />
-            </div>
-            <div class="flex flex-col gap-6" transition:animate="slide">
-              <ul class="flex flex-col gap-2 pt-10 md:pt-0 items-start md:items-end">
-                <p class="md:hidden font-semibold">Related:</p>
-                {
-                  posts.map((post) => {
-                    const randomClass = getRandomClass();
-                    return (
-                      <li class={`text-left rounded-lg border-1 border-black backdrop-blur-md bg-white/30 dark:bg-black/30 group transition px-2 py-2 ${randomClass}`}>
-                        <a
-                          href={`/blog/${post.id}/`}
-                        >
-                          <h4 class="dark:text-white">{post.data.title}</h4>
-                        </a>
-                      </li>
-                    );
-                  })
-                }
-              </ul>
-            </div>
-          </div>
+        <hr />
+      </div>
+      <div class="flex justify-between py-10 md:flex-row flex-col">
+        <div class="prose flex flex-col gap-6 dark:prose-invert">
+          <slot />
         </div>
-      </article>
-    </main>
-    <Footer />
-    
-  </body>
-</html>
+        <div class="flex flex-col gap-6" transition:animate="slide">
+          <ul class="flex flex-col gap-2 pt-10 md:pt-0 items-start md:items-end list-none">
+            <p class="md:hidden font-semibold">Related:</p>
+            {
+              posts.map((post) => {
+                const randomClass = getRandomClass();
+                return (
+                  <li class={`text-left rounded-sm backdrop-blur-md bg-white/30 dark:bg-black/30 group transition px-2 py-2 ${randomClass}`}>
+                    <a
+                      href={`/blog/${post.id}/`}
+                    >
+                      <h4 class="dark:text-white">{post.data.title}</h4>
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
 
 <style>
   /* Add styles for better dark mode text contrast */
@@ -124,5 +110,11 @@ const getRandomClass = () => {
   
   :global(.dark) p {
     color: #e0e0e0;
+  }
+
+  .icon-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>

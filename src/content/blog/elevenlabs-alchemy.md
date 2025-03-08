@@ -1,7 +1,7 @@
 ---
 title: 'Elevenlabs Alchemy'
 description: 'Synthetic voice-over for the advertisement industry'
-icon: "🎙️"
+icon: "<FaMicrophone />"
 pubDate: '2023-02-25'
 heroImage: "/src/assets/Eleven.png"
 tags: ['Synthetic Voice', 'Elevenlabs', 'Voice-over', 'Advertisement']

@@ -1,0 +1,176 @@
+---
+import BaseHead from "@/components/BaseHead.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { ViewTransitions } from 'astro:transitions';
+import SVGFilters from "@/components/SVGFilters.astro";
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} />
+    <ViewTransitions />
+    <script>
+      // Check localStorage first, then fall back to system preference
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      
+      if (theme === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Video background is placed here once and persists across page transitions -->
+    <div id="video-background" class="fixed-video-background" transition:persist="video-background">
+      <div class="video-overlay"></div>
+      <div class="white-overlay dark:invert"></div>
+      <video
+        class="video-bg dark:invert"
+        playsinline
+        autoplay
+        muted
+        loop
+        preload="metadata"
+        id="bgvid"
+        poster="/video-poster.jpg"
+      >
+        <source src="/sky.webm" type="video/webm" />
+        <source src="/sky.mp4" type="video/mp4" />
+      </video>
+    </div>
+    
+    <!-- SVG Filters that persist across page transitions -->
+    <div transition:persist="svg-filters">
+      <SVGFilters />
+    </div>
+    
+    <Header />
+    <main class="container mx-auto md:px-10">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  /* Add a class to the body for when video is active */
+  body.has-video-bg {
+    background: transparent;
+  }
+  
+  /* Fixed video background */
+  .fixed-video-background {
+    position: fixed;
+    top: -5vh;
+    left: -5vw;
+    width: 110vw;
+    height: 110vh;
+    z-index: -1;
+    overflow: hidden;
+  }
+  
+  /* Video overlay */
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
+    z-index: 1;
+  }
+  
+  /* White overlay for brightness */
+  .white-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.25);
+    z-index: 1;
+  }
+  
+  :global(.dark) .video-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
+  }
+  
+  :global(.dark) .white-overlay {
+    background-color: rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Base video styles */
+  .video-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
+  
+  /* Dark mode inversion */
+  :global(.dark) .video-bg {
+    filter: invert(1) hue-rotate(180deg);
+  }
+</style>
+
+<script>
+  // Add class to body when page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    document.body.classList.add('has-video-bg');
+    
+    // Lazy load the video for better performance
+    const video = document.getElementById('bgvid') as HTMLVideoElement;
+    if (video) {
+      // Only start loading the video after the page has loaded
+      setTimeout(() => {
+        video.load();
+      }, 100);
+    }
+  });
+
+  // Handle view transitions to ensure video continues playing
+  document.addEventListener('astro:page-load', () => {
+    // Make sure the video is playing after page transitions
+    const video = document.getElementById('bgvid') as HTMLVideoElement;
+    if (video && video.paused) {
+      video.play();
+    }
+  });
+
+  // Handle view transitions before they start
+  document.addEventListener('astro:before-swap', () => {
+    // Store the current video time to resume from the same point
+    const video = document.getElementById('bgvid') as HTMLVideoElement;
+    if (video) {
+      sessionStorage.setItem('videoTime', video.currentTime.toString());
+    }
+  });
+
+  // After the page swap, restore the video state
+  document.addEventListener('astro:after-swap', () => {
+    const video = document.getElementById('bgvid') as HTMLVideoElement;
+    if (video) {
+      const storedTime = sessionStorage.getItem('videoTime');
+      if (storedTime) {
+        video.currentTime = parseFloat(storedTime);
+      }
+      video.play();
+    }
+  });
+</script> 

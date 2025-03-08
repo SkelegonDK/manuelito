@@ -9,9 +9,9 @@ import { Image } from 'astro:assets';
   <div class="flex flex-col md:flex-row gap-8 py-12">
     <!-- Personal photo/avatar section -->
     <div class="md:w-1/3 flex justify-center">
-      <div class="w-64 h-64 rounded-full overflow-hidden border-4 border-pgreen">
+      <div class="w-64 h-64 rounded-xl overflow-hidden border-4 border-white">
         <!-- Replace with your actual image path -->
-        <img src="/src/assets/manuel.png" alt="Manuel Thomsen" class="w-full h-full object-cover" />
+        <img src="/src/assets/manuel.png" alt="Manuel Thomsen" class="w-full h-full object-contain" />
       </div>
     </div>
     
@@ -30,7 +30,7 @@ import { Image } from 'astro:assets';
       </p>
       
       <!-- Personal interests section -->
-      <div class="mt-4">
+      <div class="mt-4 p-6 bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl">
         <h4 class="text-xl font-medium mb-2 dark:text-white">When I'm not coding, I enjoy:</h4>
         <ul class="list-disc list-inside space-y-1 ml-4 dark:text-gray-200">
           <li>Photography and visual arts</li>
@@ -42,12 +42,18 @@ import { Image } from 'astro:assets';
       </div>
       
       <!-- Connect section -->
-      <div class="mt-6">
+      <div class="mt-6 p-6 bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl">
         <h4 class="text-xl font-medium mb-2 dark:text-white">Let's connect:</h4>
         <div class="flex gap-4">
-          <a href="https://github.com/yourusername" class="text-pblue dark:text-pgreen transition">GitHub</a>
-          <a href="https://twitter.com/yourusername" class="text-pblue dark:text-pgreen transition">Twitter</a>
-          <a href="https://linkedin.com/in/yourusername" class="text-pblue dark:text-pgreen transition">LinkedIn</a>
+          <a href="https://github.com/yourusername" class="transition px-3 py-1">
+            <i class="fa-brands fa-github"></i> 
+          </a>
+          <a href="https://instagram.com/yourusername" class="transition px-3 py-1">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="https://linkedin.com/in/yourusername" class="transition px-3 py-1">
+            <i class="fa-brands fa-linkedin"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -61,6 +67,6 @@ import { Image } from 'astro:assets';
   }
   
   a {
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, background-color 0.3s ease;
   }
 </style> 

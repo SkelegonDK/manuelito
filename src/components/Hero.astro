@@ -1,5 +1,5 @@
 ---
-import { Icon } from "astro-icon/components";
+import { FaGlobe, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { Image } from "astro:assets";
 import Button from "@/components/Button.astro";
 import VideoBackground from "@/components/VideoBackground.astro";
@@ -15,32 +15,32 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
   <div class="container mx-auto relative z-10 flex md:flex-row flex-col gap-10 md:gap-0">
     <!-- Hero text section -->
     <div class="flex flex-col gap-6 justify-start items-start md:w-1/2 animate-fade-in">
-      <h3 class="text-pwhite hero-text">Hi, my name is Manuel</h3>
-      <h1 class="frick text-6xl font-bold hero-title">Creative Technologist</h1>
-      <p class="text-pwhite hero-text">Synthetic voice-over specialist for the advertisement industry.</p>
+      <h3 class="text-black dark:text-white ">Manuel Thomsen</h3>
+      <h1 class="frick text-6xl font-bold text-black dark:text-white">Creative Technologist</h1>
+      <p class="text-black dark:text-white ">Synthetic voice-over specialist for the advertisement industry.</p>
       
       <!-- Social Icons -->
       <div class="flex items-center gap-4 text-2xl mt-2">
         <a
           href="https://jramma.com"
           target="_blank"
-          class="py-1 pl-3 rounded-md border-1 border-black bg-ppink"
+          class="py-1 pl-3 "
         >
-          <Icon name="web" />
+          <FaGlobe size={24} />
         </a>
         <a
           href="https://github.com/jramma"
           target="_blank"
-          class="border-1 p-1 border-black rounded-full bg-pblue"
+          class=" p-1 "
         >
-          <Icon name="github" />
+          <FaGithub size={24} />
         </a>
         <a
           href="https://www.linkedin.com/in/jramma/"
           target="_blank"
-          class="border-1 p-1 border-black rounded-full bg-pgreen"
+          class=" p-1 "
         >
-          <Icon name="linkedin" />
+          <FaLinkedin size={24} />
         </a>
       </div>
     </div>
@@ -99,21 +99,6 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
     transform: scale(1.05);
   }
   
-  /* Hero text styling */
-  .hero-text {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-  }
-  
-  .hero-title {
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-  }
-  
-  /* Ensure text is visible in dark mode */
-  :global(.dark) .hero-text,
-  :global(.dark) .hero-title {
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
-  }
-  
   /* Animations */
   .animate-fade-in {
     animation: fadeIn 1s ease-in-out;
@@ -140,5 +125,37 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
   // Add class to body when page loads
   document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('has-video-bg');
+  });
+</script>
+
+<script>
+  // Ensure dark/light mode classes are applied to the HTML element
+  document.addEventListener('DOMContentLoaded', () => {
+    // Get theme from localStorage first, then fall back to system preference
+    const theme = (() => {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+        return localStorage.getItem('theme');
+      }
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        return 'dark';
+      }
+      return 'light';
+    })();
+    
+    // Apply theme to html element if not already applied
+    if (!document.documentElement.classList.contains('dark') && !document.documentElement.classList.contains('light')) {
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.add('light');
+      }
+    }
+    
+    // Also apply theme to body as a fallback
+    if (theme === 'dark') {
+      document.body.classList.add('dark');
+    } else {
+      document.body.classList.add('light');
+    }
   });
 </script>

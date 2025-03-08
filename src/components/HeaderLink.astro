@@ -1,26 +1,26 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
-type Type = "primary" | "secondary" | "tertiary";
-const { href = "", text = "", style = "primary", class: className, ...props } = Astro.props;
-
-interface Props extends HTMLAttributes<'a'> {
+type Props = HTMLAttributes<'a'> & {
   text: string;
-  href: string;
   style: Type;
-}
+};
+
+type Type = "primary" | "secondary" | "tertiary";
+
+const { href, text, style, class: className, ...props } = Astro.props;
 
 const types: Record<Type, string> = {
-  primary: "text-pblue dark:text-pblue",
-  secondary: "text-pgreen dark:text-pgreen",
-  tertiary: "text-ppink dark:text-ppink",
+  primary: "text-black dark:text-white",
+  secondary: "text-black dark:text-white",
+  tertiary: "text-black dark:text-white",
 };
 
 const getType = (style: Type) => {
-  return types[style] || "";
+  return types[style];
 };
 
-const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
+const pathname = Astro.url.pathname;
 const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
@@ -47,13 +47,5 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
   a.active {
     font-weight: bolder;
     text-decoration: underline;
-  }
-  
-  :global(.dark) a {
-    color: white;
-  }
-  
-  :global(.dark) a.active {
-    color: white;
   }
 </style>
