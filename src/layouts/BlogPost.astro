@@ -45,13 +45,33 @@ const getRandomClass = () => {
 <BaseLayout title={title} description={description}>
   <article>
     <div class="relative mb-20 backdrop-blur-md " transition:animate="fade">
-      <!-- Simple black/white hero section instead of image -->
-      <div class=" dark:bg-black/30 bg-white/30 h-96 w-full flex items-center justify-center rounded-xl">
-        <div class="text-center px-6">
+      <!-- Hero section with image and title -->
+      <div class="dark:bg-black/30 bg-white/30 h-96 w-full flex items-center justify-center rounded-xl overflow-hidden relative">
+        <!-- Hero image as background -->
+        {heroImage && (
+          <div class="absolute inset-0 z-0 opacity-30">
+            {heroImage.startsWith('/src/assets/') ? (
+              <Image
+                src={images[heroImage]()}
+                alt={`Hero image for ${title}`}
+                class="w-full h-full object-cover"
+              />
+            ) : (
+              <img
+                src={heroImage}
+                alt={`Hero image for ${title}`}
+                class="w-full h-full object-cover"
+              />
+            )}
+          </div>
+        )}
+        
+        <!-- Title and description overlay -->
+        <div class="text-center px-6 z-10 relative">
           <h1 class="text-4xl md:text-9xl font-semibold dark:text-white text-black mb-4">
             {title}
           </h1>
-          <p class="text-white dark:text-black text-xl md:text-2xl" set:html={description} />
+          <p class="text-black dark:text-white text-xl md:text-2xl" set:html={description} />
         </div>
       </div>
     </div>

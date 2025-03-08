@@ -3,6 +3,7 @@ import { FaGlobe, FaGithub, FaLinkedin } from "react-icons/fa6";
 import { Image } from "astro:assets";
 import Button from "@/components/Button.astro";
 import VideoBackground from "@/components/VideoBackground.astro";
+import heroImage from "@/assets/manuel.png";
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/*.{jpeg,jpg,png,gif}",
 );
@@ -45,7 +46,18 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
       </div>
     </div>
     
-    
+    <!-- Hero image section -->
+    <div class="flex justify-center items-center animate-fade-in-delayed backdrop-blur-md">
+      <div class="hero-image-container relative  bg-white/10 dark:bg-black/10 rounded-lg shadow-xl">
+        <Image 
+          src={heroImage} 
+          alt="Manuel Thomsen - Creative Technologist" 
+          width={500} 
+          height={500}
+          class="hero-image transition-transform duration-300 hover:scale-105"
+        />
+      </div>
+    </div>
   </div>
 </section>
 
@@ -56,6 +68,20 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
     display: flex;
     align-items: center;
     position: relative;
+  }
+  
+  /* Hero image styling */
+  .hero-image-container {
+    position: relative;
+    z-index: 2;
+    overflow: visible;
+  }
+  
+  .hero-image {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
   }
   
   /* Photo card styling */
