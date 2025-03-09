@@ -1,6 +1,7 @@
 ---
 // Import Font Awesome 6 icons from react-icons
-import { FaLaptopCode } from "react-icons/fa6";
+import { BiCopy } from "react-icons/bi";
+import { FaLaptopCode, FaQuestion, FaRobot, FaSpeakap, FaSpeakerDeck, FaVideo, FaWalkieTalkie } from "react-icons/fa6";
 import { FaPaintbrush } from "react-icons/fa6";
 import { FaMobileScreen } from "react-icons/fa6";
 import { FaPeopleGroup } from "react-icons/fa6";
@@ -9,24 +10,34 @@ import { FaToolbox } from "react-icons/fa6";
 // Define your professional skills and experience here
 const skills = [
   {
-    title: "Web Development",
-    icon: FaLaptopCode,
-    description: "Building responsive, accessible, and performant web applications using modern frameworks and technologies."
+    title: "Synthetic Voice-Over",
+    icon: FaRobot,
+    description: "Creating realistic and engaging voice-overs for advertisements and other media using advanced synthetic voice technology."
   },
   {
-    title: "UI/UX Design",
-    icon: FaPaintbrush,
-    description: "Creating intuitive and beautiful user interfaces with a focus on user experience and accessibility."
+    title: "Professional Voice Cloning",
+    icon: BiCopy,
+    description: "Creating realistic, engaging and secure voice-clones for campaigns, voice assistants and more."
   },
   {
-    title: "Mobile Development",
-    icon: FaMobileScreen,
-    description: "Developing cross-platform mobile applications that provide native-like experiences."
+    title: "Synthetic Video",
+    icon: FaVideo,
+    description: "Synthetic video created with the best automation, translation and personalisation tools, based on your data."
   },
   {
-    title: "Technical Leadership",
+    title: "Synthetic Avatars",
     icon: FaPeopleGroup,
-    description: "Leading technical teams, mentoring developers, and ensuring project success through effective communication and planning."
+    description: "Create realistic and dynamic synthetic avatars, with your voice for your customers, employees and products."
+  },
+  {
+    title: "Advanced Image Generation",
+    icon: FaPaintbrush,
+    description: "Image and video generation workflows for your brand, products and services."
+  },
+  {
+    title: "Anything else?",
+    icon: FaQuestion,
+    description: "If you have an idea, let me know and I'll see what I can do."
   }
 ];
 
@@ -82,7 +93,7 @@ const getRandomClass = () => {
   </div>
   
   <!-- Projects Section -->
-  <div class="py-8">
+  <!-- <div class="py-8">
     <h3 class="text-2xl font-semibold mb-8 text-black dark:text-white">Featured Projects</h3>
     <ul class="flex flex-col gap-8 list-none">
       {
@@ -102,12 +113,14 @@ const getRandomClass = () => {
         })
       }
     </ul>
-  </div>
+  </div> -->
   
   <!-- Call to Action -->
   <div class="py-8">
     <p class="mb-4 text-black dark:text-gray-200">Interested in working together? Let's discuss your project!</p>
-    <a href="/contact" class="inline-block bg-white/10 dark:bg-black/10 text-black dark:text-white font-medium py-2 px-6 rounded-xl transition border border-black dark:border-white">Get in Touch</a>
+    <a href="mailto:manuel@manuelito.tech" class="inline-block bg-white/10 dark:bg-black/10 text-black dark:text-white font-medium py-2 px-6 rounded-xl transition">
+      Get in Touch
+    </a>
   </div>
 </section>
 

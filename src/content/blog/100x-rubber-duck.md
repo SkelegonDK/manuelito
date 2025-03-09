@@ -9,25 +9,22 @@ tags: ['Coding Assistants', 'Agentic AI', 'LLMs', 'Claude', 'Cline', 'MCP']
 
 # 100x Rubber Duck
 
+<div id="elevenlabs-audionative-widget" data-height="90" data-width="100%" data-frameborder="no" data-scrolling="no" data-publicuserid="65396038ed4b03af12ea9ce96f127b3d988c43203de2caf4eaf0671a5fa17dfa" data-playerurl="https://elevenlabs.io/player/index.html" data-projectid="SSexKfIEO9LzYzZ88Qu1" >Loading the <a href="https://elevenlabs.io/text-to-speech" target="_blank" rel="noopener">Elevenlabs Text to Speech</a> AudioNative Player...</div><script src="https://elevenlabs.io/player/audioNativeHelper.js" type="text/javascript"></script>
+
 ## Epilogue
 Since I last talked about my AI-enhanced development workflow A LOT has happened. Too much to be honest. 
-
 For one... Sorry [Claude Projects](https://www.anthropic.com/index/claude), but I stopped using it. (Obviously as I write this Claude Sonnet 3.7 I released 🤣 )
 Projects still has value for organizing writing tasks and thoughts, but I can also do that with [ChatGPT](https://openai.com/chatgpt).
-
 For complex programming tasks I'll use OpenAi's [o3-mini](https://platform.openai.com/docs/models/gpt-4), and for deep reasoning tasks. That said, I'm not doing hard engineering most of the time. I'm setting up a frontend, backend and developing some kind of product.
 
 Long story short, most of the time I'm interacting with APIs and API documentation and frontend documentation. 
-
 So, for this reason - I built my own scraper tool. Works great! (on sites you can scrape). It's on my repo as [scrape2markdown](https://github.com/SkelegonDK/scrape2markdown), very easy to run with [Streamlit](https://streamlit.io/).
 It will take a list of urls, filter the content and create a markdown file based on the output. GREAT for LLM context tasks.
 
 ## Next Level Research
 
 I've had [Perplexity](https://www.perplexity.ai/) on my radar for a VERY long time, but I don't do research in a traditional sense very often, so it never occurred to me that Perplexity would be interesting for development tasks. 
-
 But once I tried the free version, I realized that its ability to cross reference multiple articles AND documentation was actually VERY impressive.
-
 From here, you can do a lot of work and save a lot of double-checking in changing platforms and libraries. Part of the idea here is also informative.
 This can help you make tailor-made guides, for **YOUR** specific case, and have it be up to date with the latest standards.
 
@@ -42,13 +39,9 @@ In short: don't let the dopamine rush of "talking about doing" replace the satis
 ## Getting Real
 
 Now, to execute all of these high-level dev work, we need tools. For me, [Cline](https://cline.bot/) has been invaluable. Even if there are other tools that do similar things or have even more advanced environments, I do like the fact that I'm mostly in control.
-
 Why does control matter? Because I've learned the hard way that BIGGER isn't always BETTER. Take Gemini 2 Flash-huge context window, dirt cheap, lightning fast. It gives you this intoxicating ILLUSION of infinite context. You start dumping your entire codebase in there, feeling like a genius for leveraging all that power.
-
 Then reality hits around the 500k token mark. The model COMPLETELY IMPLODES. Your carefully crafted responses turn into gibberish. The code looks fine at first glance but contains subtle, maddening bugs that waste hours of debugging time. I've been there, staring at my screen at 2AM, wondering why my brilliantly "AI-assisted" architecture suddenly doesn't work.
-
 This is what I mean when I say these tools can be depriving you of the pain-the NECESSARY pain-of actually connecting neurons, solving problems yourself. Sometimes you need to face **A WHOLE LOT OF PROBLEMS** head-on to grow as a developer.
-
 Even with the best LLMs as your copilot (like [Claude](https://www.anthropic.com/index/claude) or [Cursor](https://cursor.so/)), if your codebase is complex enough, not even a 1 million token context will save you. These failures forced me back to the drawing board to THINK like a developer again. And honestly? That mental muscle memory is irreplaceable. Believe me, I've tried to shortcut it-and paid the price.
 
 ## Memory
@@ -56,24 +49,24 @@ Even with the best LLMs as your copilot (like [Claude](https://www.anthropic.com
 The [Cline extension](https://docs.cline.bot/improving-your-prompting-skills/custom-instructions-library/cline-memory-bank) offers a specific prompt that gives it its own memory system, which I can humbly say was better than mine, and I've embraced with some modifications. This is what I've added to it - behavior. 
 
 ```markdown
-1.Incremental Task Breakdown
-- Always split larger projects into smaller, manageable tasks.
-- Tackle one task at a time rather than generating monolithic code blocks.
-2.Active Critical Inquiry
-- For every design decision or code snippet, ask, "Why is this the best approach?" and "What alternatives did we consider?"
-- Be highly critical of your answers - if something feels off, challenge it and refine your reasoning.
-3.Reflective Feedback Loop
-- After completing each small task, review the output and articulate the rationale behind each choice.
-- Provide immediate, constructive feedback on what worked well and what can be improved.
-4.Aligned Vision and Communication
-- Begin every task with a clear definition of goals and ensure both you and the agent share a common understanding of what's being built.
-- Continuously ask clarifying questions to keep your vision aligned with the development process.
-5.Best Practices and Incremental Learning
-- Follow coding best practices, emphasizing clarity, maintainability, and efficiency for every small task.
-- Use each task as a learning opportunity by critically examining your approach and integrating feedback into future tasks.
-6.Guided Challenge Mode
-- Introduce mini-challenges: after completing a task, ask follow-up questions like, "How would this change in a more complex scenario?" or "What might be the potential pitfalls?"
-- Encourage yourself to think critically about each solution and be prepared to iterate based on constructive criticism.
+1. Incremental Task Breakdown
+    - Always split larger projects into smaller, manageable tasks.
+    - Tackle one task at a time rather than generating monolithic code blocks.
+2. Active Critical Inquiry
+    - For every design decision or code snippet, ask, "Why is this the best approach?" and "What alternatives did we consider?"
+    - Be highly critical of your answers - if something feels off, challenge it and refine your reasoning.
+3. Reflective Feedback Loop
+    - After completing each small task, review the output and articulate the rationale behind each choice.
+    - Provide immediate, constructive feedback on what worked well and what can be improved.
+4. Aligned Vision and Communication
+    - Begin every task with a clear definition of goals and ensure both you and the agent share a common understanding of what's being built.
+    - Continuously ask clarifying questions to keep your vision aligned with the development process.
+5. Best Practices and Incremental Learning
+    - Follow coding best practices, emphasizing clarity, maintainability, and efficiency for every small task.
+    - Use each task as a learning opportunity by critically examining your approach and integrating feedback into future tasks.
+6. Guided Challenge Mode
+    - Introduce mini-challenges: after completing a task, ask follow-up questions like, "How would this change in a more complex scenario?" or "What might be the potential pitfalls?"
+    - Encourage yourself to think critically about each solution and be prepared to iterate based on constructive criticism.
 ```
 
 ## Taking a step back
@@ -82,16 +75,16 @@ Agents tend to go on rabbit holes and go off on tasks that are way bigger than t
 
 ## Next NEXT Level
 
-If you are still reading, thank you for hanging on! 
+If you are still reading, thank you for hanging on!
 Now comes the real cadre of this article: **MCP servers**.
 [Model Context Protocol (MCP)](https://github.com/anthropic/mcp) was created by Anthropic as their open-source extension platform for agents. They provide tools to do specific tasks and interact with APIs effectively. Clines' new extension store has a curated list, and it also installs and tests the servers for you, to make sure that they are set up correctly. But you can find some resources on the MCP GitHub page.
 
-My favorites are here:
-- [Puppeteer](https://www.mcpservers.ai/servers/modelcontextprotocol/Puppeteer): for programmatic browser control
-- [Markdownify](https://github.com/zcaceres/markdownify-mcp): for turning page URLs into Markdown
-- [Perplexity Search](https://www.perplexity.ai/): Perplexity's search and research capabilities are amazing. 
-- [Software Planning](https://glama.ai/mcp/servers/a35c7qc7ie): Very good at keeping Clines in check and not letting go of weird tangents and too-big tasks.
-- More to come, probably... Claude 3.7 just released!
+### My favorites are here:
+
+- [Puppeteer](https://www.mcpservers.ai/servers/modelcontextprotocol/Puppeteer) - for programmatic browser control.
+- [Markdownify](https://github.com/zcaceres/markdownify-mcp) - for turning page URLs into Markdown.
+- [Perplexity Search](https://www.perplexity.ai/) - Perplexity's search and research capabilities are amazing.
+- [Software Planning](https://glama.ai/mcp/servers/a35c7qc7ie) - Very good at keeping Clines in check and not letting go of weird tangents and too-big tasks.
 
 ## Conclusion
 
@@ -101,4 +94,4 @@ But here's the thing: don't deprive yourself of the experience of failing and le
 
 Understanding too little makes you overly reliant on Copilot, Cursor, or Cline. But knowing how to put ideas together, give them a meaningful interface, and most importantly, DEPLOY THEM in a state where they create actual value for humanity-THAT'S what justifies burning through the astronomical computation these models demand.
 
-Your rubber duck has gotten 100x smarter, but at the end of the day, it's still YOU who needs to solve the problem. The duck-even a super-powered AI duck-is just there to listen and occasionally quack back something useful. The magic happens when you combine its intelligence with yours and build something that matters. 
+Your rubber duck has gotten 100x smarter, but at the end of the day, it's still YOU who needs to solve the problem. The duck-even a super-powered AI duck-is just there to listen and occasionally quack back something useful. The magic happens when you combine its intelligence with yours and build something that matters.
