@@ -72,8 +72,7 @@ const getRandomClass = () => {
 };
 ---
 
-<section class="flex flex-col text-center gap-8">
-  
+<section class="what-i-do-section">
   <!-- Skills Section -->
   <div class="py-8">
     <h3 class="text-2xl font-semibold mb-8 text-black dark:text-white">Skills & Expertise</h3>
@@ -118,13 +117,19 @@ const getRandomClass = () => {
   <!-- Call to Action -->
   <div class="py-8">
     <p class="mb-4 text-black dark:text-gray-200">Interested in working together? Let's discuss your project!</p>
-    <a href="mailto:manuel@manuelito.tech" class="inline-block bg-white/10 dark:bg-black/10 text-black dark:text-white font-medium py-2 px-6 rounded-xl transition">
+    <a href="mailto:contact@manuelito.tech" class="inline-block bg-white/10 dark:bg-black/10 text-black dark:text-white font-medium py-2 px-6 rounded-xl transition">
       Get in Touch
     </a>
   </div>
 </section>
 
 <style>
+  /* What I Do section styling */
+  .what-i-do-section {
+    width: 100%;
+    max-width: none;
+  }
+
   /* Ensure text is readable in both light and dark modes */
   :global(.dark) h3 {
     color: white;
@@ -133,5 +138,11 @@ const getRandomClass = () => {
   /* Add subtle transition for color changes */
   li {
     transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Add some subtle hover effects */
+  .bg-white\/10:hover, .bg-black\/10:hover {
+    transform: translateY(-2px);
+    transition: transform 0.2s ease;
   }
 </style>
