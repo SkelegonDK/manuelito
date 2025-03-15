@@ -69,6 +69,115 @@ const { title, description } = Astro.props;
       <slot />
     </main>
     <Footer />
+    
+    <script>
+      // Video background loading handler
+      document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('has-video-bg');
+        
+        // Lazy load the video for better performance
+        const video = document.getElementById('bgvid') as HTMLVideoElement;
+        if (video) {
+          // Only start loading the video after the page has loaded
+          setTimeout(() => {
+            video.load();
+          }, 100);
+        }
+        
+        // Setup image preloading on hover
+        setupImagePreloading();
+      });
+      
+      // Function to handle preloading images on hover
+      function setupImagePreloading() {
+        // Get all elements with preload-trigger class
+        const triggers = document.querySelectorAll('.preload-trigger');
+        
+        triggers.forEach(trigger => {
+          // Find all preload images within this trigger
+          const preloadImages = trigger.querySelectorAll('[data-preload-src]');
+          
+          if (preloadImages.length === 0) return;
+          
+          // Add hover event listener
+          trigger.addEventListener('mouseenter', () => {
+            preloadImages.forEach(img => {
+              const imgElement = img as HTMLImageElement;
+              const src = imgElement.getAttribute('data-preload-src');
+              
+              if (src && !imgElement.src) {
+                // Create a new image to preload
+                const preloader = new Image();
+                preloader.src = src;
+                
+                // Once loaded, set the src on the original element
+                preloader.onload = () => {
+                  imgElement.src = src;
+                };
+              }
+            });
+          });
+        });
+      }
+
+      // Handle theme persistence across page transitions
+      const handleThemePersistence = () => {
+        const theme = localStorage.getItem('theme') || 
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        
+        // Set data-theme attribute
+        document.documentElement.setAttribute('data-theme', theme);
+        document.documentElement.style.colorScheme = theme as 'light' | 'dark';
+        
+        // Also add/remove the dark class for backward compatibility
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          document.body.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+          document.body.classList.remove('dark');
+        }
+      };
+
+      // Run on every Astro page transition
+      document.addEventListener('astro:page-load', () => {
+        // Make sure the video is playing after page transitions
+        const video = document.getElementById('bgvid') as HTMLVideoElement;
+        if (video && video.paused) {
+          video.play();
+        }
+        
+        // Apply theme from localStorage on every page transition
+        handleThemePersistence();
+        
+        // Setup image preloading after page transitions
+        setupImagePreloading();
+      });
+
+      // Handle view transitions before they start
+      document.addEventListener('astro:before-swap', () => {
+        // Store the current video time to resume from the same point
+        const video = document.getElementById('bgvid') as HTMLVideoElement;
+        if (video) {
+          sessionStorage.setItem('videoTime', video.currentTime.toString());
+        }
+      });
+
+      // After the page swap, restore the video state
+      document.addEventListener('astro:after-swap', () => {
+        const video = document.getElementById('bgvid') as HTMLVideoElement;
+        if (video) {
+          const storedTime = sessionStorage.getItem('videoTime');
+          if (storedTime) {
+            video.currentTime = parseFloat(storedTime);
+          }
+          video.play();
+        }
+        
+        // Ensure theme is applied after swap
+        handleThemePersistence();
+      });
+    </script> 
   </body>
 </html>
 
@@ -148,75 +257,4 @@ const { title, description } = Astro.props;
   html.dark .video-bg {
     filter: invert(1) hue-rotate(180deg);
   }
-</style>
-
-<script>
-  // Add class to body when page loads
-  document.addEventListener('DOMContentLoaded', () => {
-    document.body.classList.add('has-video-bg');
-    
-    // Lazy load the video for better performance
-    const video = document.getElementById('bgvid') as HTMLVideoElement;
-    if (video) {
-      // Only start loading the video after the page has loaded
-      setTimeout(() => {
-        video.load();
-      }, 100);
-    }
-  });
-
-  // Handle theme persistence across page transitions
-  const handleThemePersistence = () => {
-    const theme = localStorage.getItem('theme') || 
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    
-    // Set data-theme attribute
-    document.documentElement.setAttribute('data-theme', theme);
-    document.documentElement.style.colorScheme = theme as 'light' | 'dark';
-    
-    // Also add/remove the dark class for backward compatibility
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-      document.body.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.body.classList.remove('dark');
-    }
-  };
-
-  // Run on every Astro page transition
-  document.addEventListener('astro:page-load', () => {
-    // Make sure the video is playing after page transitions
-    const video = document.getElementById('bgvid') as HTMLVideoElement;
-    if (video && video.paused) {
-      video.play();
-    }
-    
-    // Apply theme from localStorage on every page transition
-    handleThemePersistence();
-  });
-
-  // Handle view transitions before they start
-  document.addEventListener('astro:before-swap', () => {
-    // Store the current video time to resume from the same point
-    const video = document.getElementById('bgvid') as HTMLVideoElement;
-    if (video) {
-      sessionStorage.setItem('videoTime', video.currentTime.toString());
-    }
-  });
-
-  // After the page swap, restore the video state
-  document.addEventListener('astro:after-swap', () => {
-    const video = document.getElementById('bgvid') as HTMLVideoElement;
-    if (video) {
-      const storedTime = sessionStorage.getItem('videoTime');
-      if (storedTime) {
-        video.currentTime = parseFloat(storedTime);
-      }
-      video.play();
-    }
-    
-    // Ensure theme is applied after swap
-    handleThemePersistence();
-  });
-</script> 
+</style> 

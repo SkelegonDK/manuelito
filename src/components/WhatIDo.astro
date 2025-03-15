@@ -6,38 +6,45 @@ import { FaPaintbrush } from "react-icons/fa6";
 import { FaMobileScreen } from "react-icons/fa6";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { FaToolbox } from "react-icons/fa6";
+import PreloadImageOnHover from './PreloadImageOnHover.astro';
 
 // Define your professional skills and experience here
 const skills = [
   {
     title: "Synthetic Voice-Over",
     icon: FaRobot,
-    description: "Creating realistic and engaging voice-overs for advertisements and other media using advanced synthetic voice technology."
+    description: "Creating realistic and engaging voice-overs for advertisements and other media using advanced synthetic voice technology.",
+    preloadImage: "/src/assets/Eleven.png"
   },
   {
     title: "Professional Voice Cloning",
     icon: BiCopy,
-    description: "Creating realistic, engaging and secure voice-clones for campaigns, voice assistants and more."
+    description: "Creating realistic, engaging and secure voice-clones for campaigns, voice assistants and more.",
+    preloadImage: "/src/assets/100x.png"
   },
   {
     title: "Synthetic Video",
     icon: FaVideo,
-    description: "Synthetic video created with the best automation, translation and personalisation tools, based on your data."
+    description: "Synthetic video created with the best automation, translation and personalisation tools, based on your data.",
+    preloadImage: "/src/assets/rubberduck.png"
   },
   {
     title: "Synthetic Avatars",
     icon: FaPeopleGroup,
-    description: "Create realistic and dynamic synthetic avatars, with your voice for your customers, employees and products."
+    description: "Create realistic and dynamic synthetic avatars, with your voice for your customers, employees and products.",
+    preloadImage: "/src/assets/hero.png"
   },
   {
     title: "Advanced Image Generation",
     icon: FaPaintbrush,
-    description: "Image and video generation workflows for your brand, products and services."
+    description: "Image and video generation workflows for your brand, products and services.",
+    preloadImage: "/src/assets/AR_Museum.png"
   },
   {
     title: "Anything else?",
     icon: FaQuestion,
-    description: "If you have an idea, let me know and I'll see what I can do."
+    description: "If you have an idea, let me know and I'll see what I can do.",
+    preloadImage: null
   }
 ];
 
@@ -79,12 +86,13 @@ const getRandomClass = () => {
     <ul class="grid grid-cols-1 md:grid-cols-2 gap-6 list-none">
       {
         skills.map((skill) => (
-          <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 text-left flex flex-col gap-3 transition">
+          <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 text-left flex flex-col gap-3 transition preload-trigger">
             <div class="text-4xl text-black dark:text-white">
               <skill.icon size={40} />
             </div>
             <h4 class="text-xl font-medium text-black dark:text-white">{skill.title}</h4>
             <p class="text-black dark:text-gray-200">{skill.description}</p>
+            {skill.preloadImage && <PreloadImageOnHover src={skill.preloadImage} alt={skill.title} />}
           </li>
         ))
       }

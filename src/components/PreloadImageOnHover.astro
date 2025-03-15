@@ -1,0 +1,36 @@
+---
+// A utility component that preloads an image when the parent element is hovered
+// Usage: <PreloadImageOnHover src="/path/to/image.jpg" />
+
+interface Props {
+  src: string;
+  alt?: string;
+}
+
+const { src, alt = "Preloaded image" } = Astro.props;
+---
+
+<div class="hidden">
+  <!-- This image is hidden but will be preloaded on hover -->
+  <img 
+    data-preload-src={src} 
+    alt={alt}
+    class="preload-image"
+    loading="lazy"
+  />
+</div>
+
+<script>
+  // The preloading functionality is now handled globally in BaseLayout.astro
+  // This component just provides the markup for the preloadable images
+</script>
+
+<style>
+  .preload-image {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+</style> 

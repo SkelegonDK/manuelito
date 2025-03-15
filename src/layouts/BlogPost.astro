@@ -49,18 +49,21 @@ const getRandomClass = () => {
       <div class="dark:bg-black/30 bg-white/30 h-96 w-full flex items-center justify-center rounded-xl overflow-hidden relative">
         <!-- Hero image as background -->
         {heroImage && (
-          <div class="absolute inset-0 z-0 opacity-30">
+          <div class="absolute inset-0 z-0 opacity-30 blog-hero-image-container">
             {heroImage.startsWith('/src/assets/') ? (
               <Image
                 src={images[heroImage]()}
                 alt={`Hero image for ${title}`}
                 class="w-full h-full object-cover"
+                loading="eager"
               />
             ) : (
               <img
                 src={heroImage}
                 alt={`Hero image for ${title}`}
                 class="w-full h-full object-cover"
+                loading="eager"
+                fetchpriority="high"
               />
             )}
           </div>
@@ -99,6 +102,37 @@ const getRandomClass = () => {
     </div>
   </article>
 </BaseLayout>
+
+<script>
+  // Ensure blog hero images are properly loaded
+  document.addEventListener('DOMContentLoaded', setupBlogHeroImages);
+  document.addEventListener('astro:page-load', setupBlogHeroImages);
+  
+  function setupBlogHeroImages() {
+    const heroImageContainers = document.querySelectorAll('.blog-hero-image-container');
+    
+    heroImageContainers.forEach(container => {
+      const img = container.querySelector('img');
+      if (!img) return;
+      
+      // Initially set opacity to 0
+      img.style.opacity = '0';
+      
+      // When image is loaded, fade it in
+      if (img.complete) {
+        // Image is already loaded
+        setTimeout(() => {
+          img.style.opacity = '1';
+        }, 100);
+      } else {
+        // Wait for image to load
+        img.onload = () => {
+          img.style.opacity = '1';
+        };
+      }
+    });
+  }
+</script>
 
 <style>
   /* Add styles for better dark mode text contrast */

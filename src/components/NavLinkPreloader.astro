@@ -1,0 +1,100 @@
+---
+// A component that preloads page assets when hovering over navigation links
+// Usage: <NavLinkPreloader path="/about" />
+
+interface Props {
+  path: string;
+}
+
+const { path } = Astro.props;
+
+// Define images to preload for each path
+const pathToImages = {
+  '/about': [
+    '/optimized/manuel.webp',
+    '/optimized/mini_manu.webp',
+    '/optimized/AR_Museum.webp',
+    '/optimized/skelegon_print.webp'
+  ],
+  '/what-i-do': [
+    '/optimized/Eleven.webp',
+    '/optimized/100x.webp',
+    '/optimized/rubberduck.webp',
+    '/optimized/hero.webp',
+    '/optimized/AR_Museum.webp'
+  ],
+  '/blog': [
+    // Blog hero images
+    '/optimized/fran.webp',
+    '/optimized/euro.webp',
+    '/optimized/adriana.webp'
+  ],
+  '/': [
+    // Home page images
+    '/optimized/hero.webp',
+    '/optimized/manuel.webp'
+  ]
+};
+
+// Get the images for the current path
+const imagesToPreload = pathToImages[path as keyof typeof pathToImages] || [];
+---
+
+<div class="nav-preloader" data-path={path}>
+  {imagesToPreload.map(img => (
+    <link rel="prefetch" href={img} as="image" />
+  ))}
+</div>
+
+<script>
+  // This script will dynamically add preload links when hovering over navigation links
+  document.addEventListener('DOMContentLoaded', setupNavPreloading);
+  document.addEventListener('astro:page-load', setupNavPreloading);
+  
+  // Create a global map to track which paths have been preloaded
+  // This ensures we don't preload the same images multiple times across page transitions
+  const preloadedPaths = new Map();
+  
+  function setupNavPreloading() {
+    // Get all navigation links with our data attribute
+    const navLinks = document.querySelectorAll('a[data-nav-link]');
+    
+    navLinks.forEach(link => {
+      const path = link.getAttribute('data-nav-link');
+      if (!path) return;
+      
+      // Remove any existing listeners to prevent duplicates
+      link.removeEventListener('mouseenter', () => preloadImagesForPath(path));
+      
+      // Add mouseenter event to preload images when hovering
+      link.addEventListener('mouseenter', () => preloadImagesForPath(path));
+    });
+  }
+  
+  function preloadImagesForPath(path: string) {
+    // Only preload once per session
+    if (preloadedPaths.get(path)) return;
+    
+    // Find the preloader for this path
+    const preloader = document.querySelector(`.nav-preloader[data-path="${path}"]`);
+    if (!preloader) return;
+    
+    // Get all prefetch links
+    const prefetchLinks = preloader.querySelectorAll('link[rel="prefetch"]');
+    
+    // Create actual preload links in the head
+    prefetchLinks.forEach(prefetchLink => {
+      const href = prefetchLink.getAttribute('href');
+      if (!href) return;
+      
+      console.log(`Preloading image for ${path}: ${href}`);
+      
+      // Create a new image to preload
+      const img = new Image();
+      img.src = href;
+    });
+    
+    // Mark this path as preloaded
+    preloadedPaths.set(path, true);
+  }
+</script> 

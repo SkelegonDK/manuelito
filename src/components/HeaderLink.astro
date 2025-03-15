@@ -32,6 +32,7 @@ const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
     `frick rounded-md inline-block px-4 py-1 transition ease-in-out ${getType(style)}`,
     { active: isActive }
   ]}
+  data-nav-link={href}
   {...props}
 >
   {text}

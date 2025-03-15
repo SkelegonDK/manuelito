@@ -1,0 +1,142 @@
+---
+// A component that preloads blog post images
+// This component should be included in the blog index page
+
+import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+// Get all blog posts
+const posts = await getCollection("blog");
+
+// Extract hero images from blog posts
+const heroImages = posts.map(post => post.data.heroImage).filter(Boolean);
+
+// Convert src/assets paths to optimized paths
+const optimizedImages = heroImages.map(img => {
+  if (typeof img !== 'string') return null;
+  
+  // If it's a src/assets path, convert to optimized path
+  if (img.startsWith('/src/assets/')) {
+    const filename = img.split('/').pop();
+    if (!filename) return null;
+    
+    const baseName = filename.split('.')[0];
+    return `/optimized/${baseName}.webp`;
+  }
+  
+  // If it's already an optimized path or external URL, use as is
+  return img;
+}).filter(Boolean) as string[];
+
+// Remove duplicates
+const uniqueImages = [...new Set(optimizedImages)];
+
+// Create a map of blog slugs to their hero images for individual post preloading
+const blogPostImages = new Map();
+posts.forEach((post: CollectionEntry<"blog">) => {
+  if (post.data.heroImage && typeof post.data.heroImage === 'string') {
+    let optimizedImage = post.data.heroImage;
+    
+    // Convert to optimized path if needed
+    if (optimizedImage.startsWith('/src/assets/')) {
+      const filename = optimizedImage.split('/').pop();
+      if (filename) {
+        const baseName = filename.split('.')[0];
+        optimizedImage = `/optimized/${baseName}.webp`;
+      }
+    }
+    
+    blogPostImages.set(`/blog/${post.id}`, optimizedImage);
+  }
+});
+---
+
+<div class="blog-image-preloader hidden">
+  {uniqueImages.map(img => (
+    <link rel="prefetch" href={img} as="image" />
+  ))}
+  
+  <!-- Individual blog post preloaders -->
+  {Array.from(blogPostImages.entries()).map(([path, img]) => (
+    <div class="blog-post-preloader" data-path={path}>
+      <link rel="prefetch" href={img} as="image" />
+    </div>
+  ))}
+</div>
+
+<script>
+  // Preload blog images when the blog link is hovered
+  document.addEventListener('DOMContentLoaded', setupBlogImagePreloading);
+  document.addEventListener('astro:page-load', setupBlogImagePreloading);
+  
+  // Track if blog images have been preloaded
+  let blogImagesPreloaded = false;
+  
+  // Track which blog post images have been preloaded
+  const preloadedBlogPosts = new Map();
+  
+  function setupBlogImagePreloading() {
+    // Get the blog navigation link
+    const blogLink = document.querySelector('a[data-nav-link="/blog"]');
+    if (blogLink) {
+      // Add mouseenter event to preload blog images
+      blogLink.addEventListener('mouseenter', () => {
+        if (blogImagesPreloaded) return;
+        
+        const preloader = document.querySelector('.blog-image-preloader');
+        if (!preloader) return;
+        
+        const prefetchLinks = preloader.querySelectorAll(':scope > link[rel="prefetch"]');
+        
+        prefetchLinks.forEach(link => {
+          const href = link.getAttribute('href');
+          if (!href) return;
+          
+          console.log(`Preloading blog image: ${href}`);
+          
+          // Create a new image to preload
+          const img = new Image();
+          img.src = href;
+        });
+        
+        blogImagesPreloaded = true;
+      });
+    }
+    
+    // Get all blog post links
+    const blogPostLinks = document.querySelectorAll('a[href^="/blog/"]');
+    
+    blogPostLinks.forEach(link => {
+      const path = link.getAttribute('href');
+      if (!path) return;
+      
+      // Add mouseenter event to preload specific blog post image
+      link.addEventListener('mouseenter', () => {
+        // Only preload once per session
+        if (preloadedBlogPosts.get(path)) return;
+        
+        // Find the preloader for this path
+        const preloader = document.querySelector(`.blog-post-preloader[data-path="${path}"]`);
+        if (!preloader) return;
+        
+        // Get all prefetch links
+        const prefetchLinks = preloader.querySelectorAll('link[rel="prefetch"]');
+        
+        // Create actual preload links in the head
+        prefetchLinks.forEach(prefetchLink => {
+          const href = prefetchLink.getAttribute('href');
+          if (!href) return;
+          
+          console.log(`Preloading image for blog post ${path}: ${href}`);
+          
+          // Create a new image to preload
+          const img = new Image();
+          img.src = href;
+        });
+        
+        // Mark this path as preloaded
+        preloadedBlogPosts.set(path, true);
+      });
+    });
+  }
+</script> 

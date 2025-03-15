@@ -2,15 +2,44 @@
 import Link from "./HeaderLink.astro";
 import "../styles/hamburgers.css";
 import ThemeToggle from "./ThemeToggle.astro";
+import NavLinkPreloader from "./NavLinkPreloader.astro";
+import BlogImagePreloader from "./BlogImagePreloader.astro";
+
+// Get the current page path to display the title
+const pathname = Astro.url.pathname;
+let pageTitle = "Home";
+
+// Set the page title based on the current path
+if (pathname === "/") {
+  pageTitle = "Home";
+} else if (pathname === "/what-i-do" || pathname.startsWith("/what-i-do/")) {
+  pageTitle = "What I Do";
+} else if (pathname === "/about" || pathname.startsWith("/about/")) {
+  pageTitle = "About Me";
+} else if (pathname === "/blog" || pathname.startsWith("/blog/")) {
+  pageTitle = "Blog";
+} else {
+  // Extract the last part of the path for other pages
+  const pathParts = pathname.split("/").filter(Boolean);
+  if (pathParts.length > 0) {
+    pageTitle = pathParts[pathParts.length - 1]
+      .split("-")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+}
 ---
 
 <header class="pb-20">
   <nav
-    class="z-50 flex fixed top-0 left-0 right-0 backdrop-blur-md bg-white/20 dark:bg-black/30 w-full px-4 py-3 items-center border-b border-black/20 dark:border-white/20 justify-between"
+    class="z-50 flex fixed top-0 left-0 right-0 backdrop-blur-md bg-white/20 dark:bg-black/30 w-full px-4 py-3 items-center border-b border-black/20 dark:border-white/20 justify-between mobile-header"
+    id="mobile-header"
   >
     <a class="flex items-center gap-2" href="/">
       <p class="pt-1 md:text-lg font-semibold flex dark:text-white">
-        <span class="hidden md:block">manuelito</span>.tech
+        <span class="hidden md:block">manuelito.tech</span>
+        <!-- Mobile page title - only visible when menu is closed -->
+        <span class="md:hidden mobile-page-title text-base">{pageTitle}</span>
       </p>
     </a>
     <ul class="items-center md:gap-6 text-nowrap hidden md:flex list-none">
@@ -20,40 +49,115 @@ import ThemeToggle from "./ThemeToggle.astro";
       <li><Link href="/blog" text="Blog" style="primary" /></li>
     </ul>
     <div class="flex items-center gap-4">
-      <ThemeToggle />
+      <span class="hidden md:block"><ThemeToggle /></span>  
       <div class="md:hidden z-40">
-        <button class="hamburger hamburger--elastic" type="button">
+        <button class="hamburger hamburger--elastic" type="button" aria-label="Menu" style="position: relative; z-index: 200;">
           <span class="hamburger-box">
             <span class="hamburger-inner dark:bg-white"></span>
           </span>
         </button>
 
-        <div id="navigation" class="fixed top-0 left-0 w-full h-full bg-white dark:bg-gray-900 transform -translate-y-full transition-transform duration-300 ease-in-out">
-          <ul class="flex flex-col items-center justify-center h-full gap-8 text-nowrap list-none">
-            <li><Link href="/" text="Home" style="primary" /></li>
-            <li><Link href="/what-i-do" text="What I Do" style="secondary" /></li>
-            <li><Link href="/about" text="About Me" style="tertiary" /></li>
-            <li><Link href="/blog" text="Blog" style="primary" /></li>
-          </ul>
+        <div id="navigation" class="fixed top-0 left-0 w-full h-0 transform transition-all duration-500 ease-in-out overflow-hidden z-[150]">
+          <!-- Separate backdrop layer for blur effect -->
+          <div class="absolute inset-0 bg-white/90 dark:bg-black/90"></div>
+          <!-- Additional layer specifically for backdrop-blur -->
+          <div class="absolute inset-0 backdrop-blur-effect"></div>
+          <div class="flex flex-col items-center justify-center h-full relative z-10">
+            <ul class="flex flex-col items-center justify-center gap-10 text-nowrap list-none">
+              <li class="nav-link text-xl"><Link href="/" text="Home" style="primary" /></li>
+              <li class="nav-link text-xl"><Link href="/what-i-do" text="What I Do" style="secondary" /></li>
+              <li class="nav-link text-xl"><Link href="/about" text="About Me" style="tertiary" /></li>
+              <li class="nav-link text-xl"><Link href="/blog" text="Blog" style="primary" /></li>
+              <li class="md:hidden block nav-link mt-4"><ThemeToggle /></li>  
+            </ul>
+          </div>
         </div>
       </div>
     </div>
   </nav>
+  
+  <!-- Hidden preloaders for each page -->
+  <div class="hidden">
+    <NavLinkPreloader path="/" />
+    <NavLinkPreloader path="/what-i-do" />
+    <NavLinkPreloader path="/about" />
+    <NavLinkPreloader path="/blog" />
+    <BlogImagePreloader />
+  </div>
 </header>
 
 <script is:inline>
   function init(){
     const hamburger = document.querySelector(".hamburger");
     const menu = document.getElementById("navigation");
-
-    if (hamburger && menu) {
+    const navLinks = document.querySelectorAll(".nav-link a");
+    const header = document.getElementById("mobile-header");
+    const pageTitle = document.querySelector(".mobile-page-title");
+    
+    if (hamburger && menu && header) {
+      // Toggle menu on hamburger click
       hamburger.addEventListener("click", () => {
-        hamburger.classList.toggle("is-active");
-        menu.classList.toggle("-translate-y-full");
-        menu.classList.toggle("translate-y-0");
+        toggleMenu();
       });
+      
+      // Close menu when a link is clicked
+      navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+          if (hamburger.classList.contains("is-active")) {
+            toggleMenu();
+            
+            // Update the page title after navigation
+            setTimeout(() => {
+              const path = link.getAttribute("href");
+              let newTitle = "Home";
+              
+              if (path === "/") {
+                newTitle = "Home";
+              } else if (path === "/what-i-do") {
+                newTitle = "What I Do";
+              } else if (path === "/about") {
+                newTitle = "About Me";
+              } else if (path === "/blog") {
+                newTitle = "Blog";
+              } else {
+                // Extract from path
+                const pathParts = path.split("/").filter(Boolean);
+                if (pathParts.length > 0) {
+                  newTitle = pathParts[pathParts.length - 1]
+                    .split("-")
+                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ");
+                }
+              }
+              
+              if (pageTitle) {
+                pageTitle.textContent = newTitle;
+              }
+            }, 500); // Wait for navigation to complete
+          }
+        });
+      });
+      
+      // Function to toggle the menu state
+      function toggleMenu() {
+        hamburger.classList.toggle("is-active");
+        
+        if (hamburger.classList.contains("is-active")) {
+          // Open the menu - animate to full screen
+          menu.style.height = "100vh";
+          document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
+          header.classList.add("menu-open");
+        } else {
+          // Close the menu - animate back to header only
+          menu.style.height = "0";
+          document.body.style.overflow = ""; // Restore scrolling
+          header.classList.remove("menu-open");
+        }
+      }
     }
   }
+  
+  // Initialize on page load and after Astro page transitions
   init();
   document.addEventListener("astro:after-swap", init);
 </script>
@@ -64,5 +168,89 @@ import ThemeToggle from "./ThemeToggle.astro";
   :global(.dark) .hamburger-inner::before,
   :global(.dark) .hamburger-inner::after {
     background-color: white;
+  }
+  
+  /* Mobile header styles */
+  .mobile-header {
+    transition: all 0.5s ease-in-out;
+  }
+  
+  /* When menu is open, make header more prominent */
+  .mobile-header.menu-open {
+    background-color: rgba(255, 255, 255, 0.8);
+  }
+  
+  :global(.dark) .mobile-header.menu-open {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  /* Navigation menu transition */
+  #navigation {
+    opacity: 0;
+    transition: height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  }
+  
+  .menu-open + #navigation,
+  .mobile-header.menu-open #navigation {
+    opacity: 1;
+  }
+  
+  /* Mobile page title styles */
+  .mobile-page-title {
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .menu-open .mobile-page-title {
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  /* Ensure hamburger button remains visible */
+  .hamburger {
+    opacity: 1 !important;
+  }
+  
+  .hamburger:hover {
+    opacity: 1 !important;
+  }
+  
+  .hamburger.is-active:hover {
+    opacity: 1 !important;
+  }
+  
+  /* Navigation link styles */
+  .nav-link a {
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link a:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  :global(.dark) .nav-link a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Ensure backdrop blur works */
+  .backdrop-blur-effect {
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+  
+  /* For browsers that don't support backdrop-filter */
+  @supports not (backdrop-filter: blur(16px)) {
+    #navigation .absolute {
+      background-color: rgba(255, 255, 255, 0.98);
+    }
+    
+    :global(.dark) #navigation .absolute {
+      background-color: rgba(0, 0, 0, 0.98);
+    }
   }
 </style>

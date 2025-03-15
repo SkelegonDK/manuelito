@@ -3,6 +3,8 @@
 import { Image } from 'astro:assets';
 import { FaEnvelope, FaGlobe, FaLinkedin, FaMapMarkerAlt } from "react-icons/fa";
 import heroImage from "@/assets/manuel.png";
+import PreloadImageOnHover from './PreloadImageOnHover.astro';
+
 const images = import.meta.glob<{ default: ImageMetadata }>(
   "/src/assets/*.{jpeg,jpg,png,gif}",
 );
@@ -11,8 +13,17 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 <section class="about-grid">
   <!-- Personal photo/avatar section -->
   <div class="photo-area flex justify-center items-center">
-    <div class="w-64 h-64 rounded-xl overflow-hidden border-4 border-white backdrop-blur-md bg-white/5 dark:bg-black/5 image-container">
-      <Image src={heroImage} alt="Manuel Thomsen" loading="lazy" class="w-full h-full object-contain transition-transform duration-300 hover-bounce" />
+    <div class="w-64 h-64 rounded-xl overflow-hidden border-4 border-white backdrop-blur-md bg-white/5 dark:bg-black/5 image-container preload-trigger">
+      <Image 
+        src={heroImage} 
+        alt="Manuel Thomsen" 
+        loading="lazy" 
+        class="w-full h-full object-contain transition-transform duration-300 hover-bounce" 
+      />
+      <!-- Preload any additional images you want to load on hover -->
+      <PreloadImageOnHover src="/src/assets/mini_manu.jpeg" alt="Manuel Thomsen" />
+      <PreloadImageOnHover src="/src/assets/AR_Museum.png" alt="AR Museum" />
+      <PreloadImageOnHover src="/src/assets/skelegon_print.png" alt="Skelegon Print" />
     </div>
   </div>
   
