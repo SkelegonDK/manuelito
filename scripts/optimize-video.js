@@ -1,7 +1,7 @@
 // This script uses ffmpeg to optimize the video file and generate a WebM version
 // Run with: node scripts/optimize-video.js
 
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
@@ -14,6 +14,7 @@ const __dirname = path.dirname(__filename);
 const originalVideoPath = path.join(__dirname, '../src/assets/sky.mp4');
 const optimizedMp4Path = path.join(__dirname, '../public/sky.mp4');
 const webmPath = path.join(__dirname, '../public/sky.webm');
+const posterPath = path.join(__dirname, '../public/video-poster.jpg');
 
 // Check if original video exists
 if (!fs.existsSync(originalVideoPath)) {
@@ -27,50 +28,149 @@ if (!fs.existsSync(publicDir)) {
   fs.mkdirSync(publicDir);
 }
 
-// Command to optimize MP4
-const optimizeMp4Command = `ffmpeg -i "${originalVideoPath}" -vf "scale=1280:-1" -c:v libx264 -crf 28 -preset medium -c:a aac -b:a 128k "${optimizedMp4Path}"`;
-
-console.log(`Optimizing MP4 video...`);
-
-// Execute the MP4 optimization command
-exec(optimizeMp4Command, (error, stdout, stderr) => {
-  if (error) {
-    console.error(`Error optimizing MP4: ${error.message}`);
-    return;
-  }
-  
-  if (stderr) {
-    console.log(`ffmpeg output (MP4): ${stderr}`);
-  }
-  
-  console.log(`MP4 video optimized successfully: ${optimizedMp4Path}`);
-  
-  // Now create WebM version
-  const createWebmCommand = `ffmpeg -i "${optimizedMp4Path}" -c:v libvpx-vp9 -crf 30 -b:v 0 -c:a libopus -b:a 128k "${webmPath}"`;
-  
-  console.log(`Creating WebM version...`);
-  
-  // Execute the WebM creation command
-  exec(createWebmCommand, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error creating WebM: ${error.message}`);
-      return;
-    }
+// Function to run ffmpeg with better error handling and progress reporting
+function runFfmpeg(args, description) {
+  return new Promise((resolve, reject) => {
+    console.log(`Starting: ${description}...`);
     
-    if (stderr) {
-      console.log(`ffmpeg output (WebM): ${stderr}`);
-    }
+    const ffmpeg = spawn('ffmpeg', args, { stdio: ['ignore', 'pipe', 'pipe'] });
+    let output = '';
+    let lastProgressLine = '';
     
-    console.log(`WebM video created successfully: ${webmPath}`);
+    // Handle stdout (not usually used by ffmpeg)
+    ffmpeg.stdout.on('data', (data) => {
+      const text = data.toString();
+      output += text;
+    });
     
-    // Compare file sizes
-    const mp4Size = fs.statSync(optimizedMp4Path).size;
-    const webmSize = fs.statSync(webmPath).size;
+    // Handle stderr (where ffmpeg outputs progress)
+    ffmpeg.stderr.on('data', (data) => {
+      const text = data.toString();
+      output += text;
+      
+      // Extract and print progress information
+      const lines = text.split('\n');
+      for (const line of lines) {
+        if (line.includes('time=')) {
+          process.stdout.write(`\r${description}: ${line.trim()}`);
+          lastProgressLine = line;
+        }
+      }
+    });
     
-    console.log(`\nFile size comparison:`);
-    console.log(`Original MP4: ${(fs.statSync(originalVideoPath).size / 1024 / 1024).toFixed(2)} MB`);
-    console.log(`Optimized MP4: ${(mp4Size / 1024 / 1024).toFixed(2)} MB`);
-    console.log(`WebM: ${(webmSize / 1024 / 1024).toFixed(2)} MB`);
-    console.log(`Reduction: ${(100 - (mp4Size / fs.statSync(originalVideoPath).size * 100)).toFixed(2)}% (MP4), ${(100 - (webmSize / fs.statSync(originalVideoPath).size * 100)).toFixed(2)}% (WebM)`);
+    // Handle process completion
+    ffmpeg.on('close', (code) => {
+      console.log(`\n${description} completed with code ${code}`);
+      if (code === 0) {
+        resolve(output);
+      } else {
+        reject(new Error(`ffmpeg exited with code ${code}\nOutput: ${output}`));
+      }
+    });
+    
+    // Handle process errors
+    ffmpeg.on('error', (err) => {
+      reject(new Error(`Failed to start ffmpeg process: ${err.message}`));
+    });
+    
+    // Set a timeout to prevent hanging
+    const timeout = setTimeout(() => {
+      ffmpeg.kill('SIGTERM');
+      reject(new Error(`${description} timed out after 10 minutes`));
+    }, 10 * 60 * 1000); // 10 minute timeout
+    
+    // Clear timeout when process completes
+    ffmpeg.on('close', () => clearTimeout(timeout));
   });
-}); 
+}
+
+// Main function to run the optimization process
+async function optimizeVideo() {
+  try {
+    // Check if files already exist and get their stats
+    const originalStats = fs.statSync(originalVideoPath);
+    const originalSizeMB = (originalStats.size / 1024 / 1024).toFixed(2);
+    console.log(`Original video size: ${originalSizeMB} MB`);
+    
+    // Generate high-quality poster from the video
+    console.log('Generating video poster...');
+    const posterArgs = [
+      '-i', originalVideoPath,
+      '-vf', 'thumbnail,scale=1920:-1',
+      '-frames:v', '1',
+      '-q:v', '2', // High quality JPEG
+      '-y',
+      posterPath
+    ];
+    
+    await runFfmpeg(posterArgs, 'Video poster generation');
+    console.log(`Video poster saved to: ${posterPath}`);
+    
+    // MP4 optimization with minimal compression (high quality)
+    const mp4Args = [
+      '-i', originalVideoPath,
+      '-c:v', 'libx264',
+      '-crf', '18', // Lower CRF means higher quality (18 is visually lossless)
+      '-preset', 'slow', // Slower preset = better compression at same quality
+      '-c:a', 'aac',
+      '-b:a', '192k', // Higher audio bitrate
+      '-movflags', 'faststart', // Optimize for web streaming
+      '-y',
+      optimizedMp4Path
+    ];
+    
+    await runFfmpeg(mp4Args, 'MP4 optimization');
+    
+    // Get optimized MP4 stats
+    const mp4Stats = fs.statSync(optimizedMp4Path);
+    const mp4SizeMB = (mp4Stats.size / 1024 / 1024).toFixed(2);
+    
+    // Check if user wants to create WebM version (optional)
+    const createWebM = process.argv.includes('--webm');
+    
+    if (createWebM) {
+      // WebM creation with reasonable quality
+      const webmArgs = [
+        '-i', optimizedMp4Path,
+        '-c:v', 'libvpx-vp9',
+        '-crf', '30', // Moderate quality
+        '-b:v', '0',
+        '-deadline', 'good',
+        '-cpu-used', '2', // Balance between speed and quality
+        '-c:a', 'libopus',
+        '-b:a', '128k',
+        '-y',
+        webmPath
+      ];
+      
+      await runFfmpeg(webmArgs, 'WebM creation');
+      
+      // Get WebM stats
+      const webmStats = fs.statSync(webmPath);
+      const webmSizeMB = (webmStats.size / 1024 / 1024).toFixed(2);
+      
+      // Print results with WebM
+      console.log(`\nFile size comparison:`);
+      console.log(`Original MP4: ${originalSizeMB} MB`);
+      console.log(`Optimized MP4: ${mp4SizeMB} MB`);
+      console.log(`WebM: ${webmSizeMB} MB`);
+      console.log(`MP4 Reduction: ${(100 - (mp4Stats.size / originalStats.size * 100)).toFixed(2)}%`);
+      console.log(`WebM Reduction: ${(100 - (webmStats.size / originalStats.size * 100)).toFixed(2)}%`);
+    } else {
+      // Print results without WebM
+      console.log(`\nFile size comparison:`);
+      console.log(`Original MP4: ${originalSizeMB} MB`);
+      console.log(`Optimized MP4: ${mp4SizeMB} MB`);
+      console.log(`MP4 Reduction: ${(100 - (mp4Stats.size / originalStats.size * 100)).toFixed(2)}%`);
+      console.log(`\nNote: WebM version was not created. Use --webm flag to create it.`);
+    }
+    
+    console.log('\nOptimization completed successfully!');
+  } catch (error) {
+    console.error(`Error during video optimization: ${error.message}`);
+    process.exit(1);
+  }
+}
+
+// Run the optimization process
+optimizeVideo(); 

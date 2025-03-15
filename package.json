@@ -8,6 +8,9 @@
     "preview": "astro preview",
     "astro": "astro",
     "optimize": "node scripts/optimize-all.js",
+    "optimize:webm": "node scripts/optimize-all.js --webm",
+    "optimize:video": "node scripts/optimize-video.js",
+    "optimize:video:webm": "node scripts/optimize-video.js --webm",
     "check-optimization": "node scripts/check-optimization.js"
   },
   "dependencies": {

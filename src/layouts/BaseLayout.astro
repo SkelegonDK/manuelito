@@ -55,7 +55,6 @@ const { title, description } = Astro.props;
         id="bgvid"
         poster="/video-poster.jpg"
       >
-        <source src="/sky.webm" type="video/webm" />
         <source src="/sky.mp4" type="video/mp4" />
       </video>
     </div>
@@ -66,7 +65,7 @@ const { title, description } = Astro.props;
     </div>
     
     <Header />
-    <main class="container mx-auto md:px-10">
+    <main class="container mx-auto md:px-8">
       <slot />
     </main>
     <Footer />

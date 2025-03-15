@@ -35,7 +35,6 @@ export default {
       fontFamily: {
         mono: ["Alexandria", "monospace"],
         sans: ["Alexandria", "sans-serif"],
-        kablamo: ["Kablammo", "serif"],
       },
       maxWidth: {
         "1/12": "8.333333%",

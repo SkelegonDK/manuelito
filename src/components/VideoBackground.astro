@@ -1,109 +1,14 @@
 <!-- 
   DEPRECATED: This component's functionality has been moved to BaseLayout.astro
   to ensure the video background persists across page transitions.
-  Please use BaseLayout instead of including this component directly.
+  
+  This component is still used by Hero.astro to add the video background class to the body.
+  It doesn't render any HTML elements - the actual video is in BaseLayout.astro.
 -->
-
-<!-- Full-page video background component -->
-<div class="fixed-video-background">
-  <div class="video-overlay"></div>
-  <div class="white-overlay dark:invert"></div>
-  <video
-    class="video-bg dark:invert"
-    playsinline
-    autoplay
-    muted
-    loop
-    preload="metadata"
-    id="bgvid"
-    poster="/video-poster.jpg"
-  >
-    <source src="/sky.webm" type="video/webm" />
-    <source src="/sky.mp4" type="video/mp4" />
-  </video>
-</div>
-
-<style is:global>
-  /* Add a class to the body for when video is active */
-  body.has-video-bg {
-    background: transparent;
-  }
-  
-  /* Fixed video background */
-  .fixed-video-background {
-    position: fixed;
-    top: -5vh;
-    left: -5vw;
-    width: 110vw;
-    height: 110vh;
-    z-index: -1;
-    overflow: hidden;
-  }
-  
-  /* Video overlay */
-  .video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1));
-    z-index: 1;
-  }
-  
-  /* White overlay for brightness */
-  .white-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.25);
-    z-index: 1;
-  }
-  
-  :global(.dark) .video-overlay {
-    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.4));
-  }
-  
-  :global(.dark) .white-overlay {
-    background-color: rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Base video styles */
-  .video-bg {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
-  
-  /* Dark mode inversion */
-  :global(.dark) .video-bg {
-    filter: invert(1) hue-rotate(180deg);
-  }
-  
-  /* Filter classes kept for reference but not applied to video */
-  .filter-turbulent-distortion {
-    /* Class kept for reference but not applied to reduce GPU load */
-  }
-</style>
 
 <script>
   // Add class to body when page loads
   document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.add('has-video-bg');
-    
-    // Lazy load the video for better performance
-    const video = document.getElementById('bgvid') as HTMLVideoElement;
-    if (video) {
-      // Only start loading the video after the page has loaded
-      setTimeout(() => {
-        video.load();
-      }, 100);
-    }
   });
 </script> 
