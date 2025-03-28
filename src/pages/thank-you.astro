@@ -1,0 +1,15 @@
+--- 
+// src/pages/thank-you.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Thank You | Manuel Thomsen">
+  <div class="container mx-auto px-4 py-16 text-center"> {/* Centered content */}
+    <h1 class="text-4xl font-bold mb-6">Thank You!</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+      Your message has been received successfully. I'll get back to you as soon as possible.
+    </p>
+    <a href="/" class="inline-block bg-indigo-600 text-white font-medium py-2 px-4 rounded hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600 transition duration-300">
+      Return to Homepage
+    </a>
+  </div>
+</BaseLayout>
