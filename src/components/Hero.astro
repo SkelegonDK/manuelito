@@ -1,5 +1,5 @@
 ---
-import { FaGlobe, FaGithub, FaLinkedin } from "react-icons/fa6";
+import { FaGlobe, FaGithub, FaLinkedin, FaRobot, FaVideo, FaToolbox } from "react-icons/fa6";
 import { Image } from "astro:assets";
 import Button from "@/components/Button.astro";
 import VideoBackground from "@/components/VideoBackground.astro";
@@ -11,14 +11,16 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
 
 <VideoBackground />
 
-<section class="hero-section pt-16 pb-20 px-4 md:px-0 relative">
+<section class="hero-section px-4 md:px-0 relative">
   <!-- Content container with higher z-index -->
   <div class="container md:justify-between mx-auto relative z-10 flex lg:flex-row md:flex-col flex-col gap-10 md:gap-0">
     <!-- Hero text section -->
     <div class="flex flex-col lg:gap-6 gap-2 justify-start items-start md:w-1/2 animate-fade-in">
       <h2 class="text-black lg:text-4xl text-2xl dark:text-white ">Manuel Thomsen</h2>
       <h1 class="frick lg:text-6xl text-4xl text-black dark:text-white">Creative Technologist</h1>
-      <p class="text-black dark:text-white lg:text-xl text-sm">Synthetic voice-over specialist for the advertisement industry.</p>
+      <p class="text-black dark:text-white lg:text-xl text-sm">
+        Synthetic voice-over specialist for the advertisement industry.
+      </p>
       
       <!-- Social Icons -->
       <div class="flex items-start gap-4 text-2xl mt-2">
@@ -44,6 +46,7 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
           <FaLinkedin size={24} />
         </a>
       </div>
+      
     </div>
     
     <!-- Hero image section -->
@@ -58,6 +61,36 @@ const images = import.meta.glob<{ default: ImageMetadata }>(
         />
       </div>
     </div>
+  </div>
+</section>
+
+<!-- Services Grid Section -->
+<section class="services-section py-20 px-4 md:px-0 relative">
+  <div class="container mx-auto">
+    <h2 class="text-4xl font-bold text-black dark:text-white mb-12 text-center">Services</h2>
+    <ul class="grid grid-cols-1 md:grid-cols-3 gap-6 list-none">
+      <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 text-left flex flex-col gap-3 transition hover:transform hover:translate-y-[-2px]">
+        <div class="text-4xl text-black dark:text-white">
+          <FaRobot size={40} />
+        </div>
+        <h4 class="text-xl font-medium text-black dark:text-white">Voice Cloning</h4>
+        <p class="text-black dark:text-gray-200">Professional voice cloning services for campaigns, voice assistants, and personalized content creation.</p>
+      </li>
+      <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 text-left flex flex-col gap-3 transition hover:transform hover:translate-y-[-2px]">
+        <div class="text-4xl text-black dark:text-white">
+          <FaVideo size={40} />
+        </div>
+        <h4 class="text-xl font-medium text-black dark:text-white">Avatar Production</h4>
+        <p class="text-black dark:text-gray-200">Creation of dynamic synthetic avatars with customized voices for enhanced customer and employee engagement.</p>
+      </li>
+      <li class="bg-white/10 dark:bg-black/10 backdrop-blur-md rounded-xl p-6 text-left flex flex-col gap-3 transition hover:transform hover:translate-y-[-2px]">
+        <div class="text-4xl text-black dark:text-white">
+          <FaToolbox size={40} />
+        </div>
+        <h4 class="text-xl font-medium text-black dark:text-white">Consulting</h4>
+        <p class="text-black dark:text-gray-200">Expert guidance on synthetic media implementation, AI workflows, and content automation strategies.</p>
+      </li>
+    </ul>
   </div>
 </section>
 
