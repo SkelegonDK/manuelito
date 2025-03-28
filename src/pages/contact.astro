@@ -1,0 +1,14 @@
+--- 
+// src/pages/contact.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactForm from '../components/ContactForm.astro';
+---
+<BaseLayout title="Contact Me | Manuel Thomsen">
+  <div class="container mx-auto px-4 py-16"> {/* Increased padding */}
+    <h1 class="text-4xl font-bold mb-8 text-center">Contact Me</h1> {/* Centered and larger heading */}
+    <p class="text-lg text-center mb-10 text-gray-600 dark:text-gray-400"> {/* Centered paragraph */}
+      Have a question or want to work together? Fill out the form below.
+    </p>
+    <ContactForm />
+  </div>
+</BaseLayout>
